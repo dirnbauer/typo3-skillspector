@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2"><file source-language="en" datatype="plaintext" original="messages"><body>
+  <trans-unit id="tab.review"><source>Skill inspection</source></trans-unit>
+  <trans-unit id="skill.check_level"><source>Review level</source></trans-unit>
+  <trans-unit id="skill.check_report"><source>Inspection report (JSON)</source></trans-unit>
+  <trans-unit id="skill.checked_at"><source>Last checked</source></trans-unit>
+</body></file></xliff>
+

@@ -1,0 +1,15 @@
+# cat=scan/enable/100; type=boolean; label=SkillSpector scan: Run NVIDIA SkillSpector when installed. Built-in security and license checks always run.
+skillspectorEnabled = 1
+
+# cat=scan/enable/110; type=string; label=SkillSpector binary: Install with "uv tool install git+https://github.com/NVIDIA/skillspector.git".
+skillspectorBinary = skillspector
+
+# cat=scan/enable/120; type=boolean; label=LLM-assisted SkillSpector analysis: Reuses nr_llm's default provider credentials and sends skill content to that provider. Off is static/local.
+skillspectorUseLlm = 0
+
+# cat=scan/enable/130; type=int+; label=SkillSpector timeout in seconds
+skillspectorTimeout = 120
+
+# cat=notification/enable/100; type=string; label=Notification recipients: Comma-separated email addresses for scheduled check action messages. Empty means log and command output only.
+notificationRecipients =
+

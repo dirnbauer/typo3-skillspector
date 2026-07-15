@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php" cacheDirectory=".Build/phpunit" colors="true">
+    <testsuites><testsuite name="unit"><directory>Tests/Unit</directory></testsuite></testsuites>
+</phpunit>
+

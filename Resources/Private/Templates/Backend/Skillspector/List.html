@@ -1,0 +1,46 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Module"/>
+<f:section name="Content">
+    <div class="callout callout-info"><div class="callout-content">
+        <h4 class="callout-title">Advisory checks only</h4>
+        <p>Checks update reports and send action messages. They never hide or enable a skill. Use the explicit buttons below to change TYPO3's hidden state; use <a href="{nrLlmSkillsUri}">nr_llm Skills</a> for source sync and enabled state.</p>
+    </div></div>
+    <form method="post" action="{moduleUri}" class="mb-3">
+        <button class="btn btn-primary" type="submit" name="action" value="scanAll">Check all skills</button>
+    </form>
+    <div class="table-fit"><table class="table table-striped table-hover">
+        <thead><tr><th>Skill</th><th>State</th><th>Review</th><th>License</th><th>SkillSpector</th><th>Checked</th><th>Actions</th></tr></thead>
+        <tbody>
+        <f:for each="{skills}" as="skill"><tr>
+            <td><strong>{skill.name}</strong><br><code>{skill.identifier}</code></td>
+            <td>
+                <f:if condition="{skill.hidden}"><span class="badge badge-danger">hidden</span></f:if>
+                <f:if condition="{skill.enabled}"><f:then><span class="badge badge-success">enabled</span></f:then><f:else><span class="badge badge-warning">disabled</span></f:else></f:if>
+                <f:if condition="{skill.orphaned}"><span class="badge badge-warning">orphaned</span></f:if>
+            </td>
+            <td>
+                <span class="badge badge-info">{skill.review.level}</span>
+                <f:if condition="{skill.review.findings}"><details><summary>{skill.review.findings -> f:count()} finding(s)</summary><ul>
+                    <f:for each="{skill.review.findings}" as="finding"><li><strong>{finding.severity}: {finding.category}</strong><br>{finding.whatToCheck}</li></f:for>
+                </ul></details></f:if>
+            </td>
+            <td>{skill.review.license.normalized}<f:if condition="{skill.review.license.status}"><br><small>{skill.review.license.status}</small></f:if></td>
+            <td>{skill.review.skillspector.status}<f:if condition="{skill.review.skillspector.score} >= 0"><br><small>{skill.review.skillspector.score}/100</small></f:if></td>
+            <td>{skill.checkedFormatted}</td>
+            <td class="text-nowrap">
+                <a href="{skill.editUri}" class="btn btn-default btn-sm">Open</a>
+                <form method="post" action="{moduleUri}" class="d-inline">
+                    <input type="hidden" name="action" value="toggleHidden"/><input type="hidden" name="skill" value="{skill.uid}"/>
+                    <f:if condition="{skill.hidden}"><f:then>
+                        <input type="hidden" name="hidden" value="0"/><button class="btn btn-default btn-sm" type="submit">Unhide</button>
+                    </f:then><f:else>
+                        <input type="hidden" name="hidden" value="1"/><button class="btn btn-warning btn-sm" type="submit">Hide</button>
+                    </f:else></f:if>
+                </form>
+            </td>
+        </tr></f:for>
+        </tbody>
+    </table></div>
+</f:section>
+</html>
+

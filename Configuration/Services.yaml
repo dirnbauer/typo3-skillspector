@@ -1,0 +1,16 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Webconsulting\Skillspector\:
+    resource: '../Classes/*'
+    exclude:
+      - '../Classes/Domain/*'
+      - '../Classes/Domain/Security/*'
+      - '../Classes/Support/*'
+
+  Webconsulting\Skillspector\Controller\Backend\SkillspectorController:
+    public: true
+

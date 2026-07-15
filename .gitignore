@@ -1,0 +1,7 @@
+/.Build/
+/.claude/
+/composer.lock
+/public/
+/var/
+/vendor/
+.DS_Store

@@ -1,0 +1,38 @@
+{
+    "name": "webconsulting/skillspector",
+    "description": "Advisory security, NVIDIA SkillSpector and license checks for nr_llm skills.",
+    "type": "typo3-cms-extension",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": "^8.2",
+        "netresearch/nr-llm": "^0.16.1",
+        "symfony/process": "^7.0",
+        "symfony/yaml": "^7.0",
+        "typo3/cms-backend": "^14.3",
+        "typo3/cms-core": "^14.3",
+        "typo3/cms-scheduler": "^14.3"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^11.5",
+        "saschaegerer/phpstan-typo3": "^3.0.1"
+    },
+    "autoload": {
+        "psr-4": {"Webconsulting\\Skillspector\\": "Classes/"}
+    },
+    "autoload-dev": {
+        "psr-4": {"Webconsulting\\Skillspector\\Tests\\": "Tests/"}
+    },
+    "scripts": {
+        "analyse": "phpstan analyse",
+        "test": "phpunit"
+    },
+    "config": {
+        "allow-plugins": {
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true
+        }
+    },
+    "extra": {"typo3/cms": {"extension-key": "skillspector"}}
+}
+

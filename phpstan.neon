@@ -1,0 +1,11 @@
+includes:
+    - vendor/saschaegerer/phpstan-typo3/extension.neon
+
+parameters:
+    level: max
+    phpVersion: 80200
+    paths:
+        - Classes
+    tmpDir: .Build/phpstan
+    treatPhpDocTypesAsCertain: false
+
