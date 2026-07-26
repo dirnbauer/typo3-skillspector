@@ -5,7 +5,7 @@
     "license": "GPL-2.0-or-later",
     "require": {
         "php": "^8.2",
-        "netresearch/nr-llm": "^0.16.1",
+        "netresearch/nr-llm": "^0.25",
         "symfony/process": "^7.0",
         "symfony/yaml": "^7.0",
         "typo3/cms-backend": "^14.3",
@@ -35,4 +35,3 @@
     },
     "extra": {"typo3/cms": {"extension-key": "skillspector"}}
 }
-
