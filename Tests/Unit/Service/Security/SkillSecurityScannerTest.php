@@ -9,10 +9,10 @@ use PHPUnit\Framework\TestCase;
 use Webconsulting\Skillspector\Service\Security\SkillSecurityScanner;
 
 /**
- * Locks the danger-tier calibration: 'danger' (which quarantines) is reserved
+ * Locks the danger-tier calibration: 'danger' is reserved
  * for context-INDEPENDENTLY catastrophic operations. A generic destructive
  * command whose safety depends on its target (rm -rf of a temp/build/relative
- * path, chmod 777) is 'warning' — advisory, never a quarantine on its own.
+ * path, chmod 777) is 'warning'. All findings remain advisory.
  */
 final class SkillSecurityScannerTest extends TestCase
 {
@@ -21,7 +21,7 @@ final class SkillSecurityScannerTest extends TestCase
      */
     private function scanCode(string $code): array
     {
-        $findings = (new SkillSecurityScanner())->scan("```sh\n" . $code . "\n```", []);
+        $findings = (new SkillSecurityScanner())->scan("```sh\n" . $code . "\n```");
         $bySeverity = [];
         foreach ($findings as $finding) {
             $bySeverity[$finding->id] = $finding->severity;
@@ -87,5 +87,4 @@ final class SkillSecurityScannerTest extends TestCase
         self::assertSame('danger', $rce['pipe_to_shell'] ?? null);
     }
 }
-
 

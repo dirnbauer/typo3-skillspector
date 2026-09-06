@@ -15,9 +15,8 @@ use Webconsulting\Skillspector\Support\Typed;
  *
  * The scan is best-effort by design: when the binary is missing or the scan
  * fails, the report carries that as a status ('unavailable'/'error') and the
- * built-in checks stand on their own — an import never fails because of
- * SkillSpector. Only a successful scan can raise the review level (a
- * DO_NOT_INSTALL verdict quarantines the skill like any danger finding).
+ * built-in checks stand on their own. Only a successful scan can raise the
+ * advisory review level. It never changes a skill's enabled or hidden state.
  */
 final readonly class SkillspectorReport
 {
@@ -33,8 +32,7 @@ final readonly class SkillspectorReport
 
     /**
      * SkillSpector issue severity => review finding severity. Only CRITICAL
-     * maps to 'danger' (quarantine-worthy on its own); the aggregate verdict
-     * (recommendation) is what primarily drives quarantine via levelFloor().
+     * maps to 'danger'; aggregate recommendations cap at 'warning'.
      */
     private const SEVERITY_MAP = [
         'CRITICAL' => SkillCheckFinding::SEVERITY_DANGER,
@@ -117,23 +115,10 @@ final readonly class SkillspectorReport
     }
 
     /**
-     * The minimum review level this scan's AGGREGATE verdict justifies, merged
-     * into SkillCheckReport::level() ("highest wins"). Deliberately capped at
-     * 'warning': the install recommendation is advisory context, not a
-     * quarantine trigger.
-     *
-     * Rationale (measured on a trusted first-party corpus): SkillSpector's
-     * aggregate recommendation has high sensitivity but low specificity — a
-     * DO_NOT_INSTALL is routinely driven by a volume of *warning*-level
-     * documentation patterns (unpinned npx/Docker refs, subprocess in helper
-     * scripts) rather than a concrete threat. Quarantine (hiding a skill so it
-     * cannot run) must instead be gated on a danger-SEVERITY finding — an
-     * exposed secret, pipe-to-shell, exfiltration endpoint, or a CRITICAL
-     * SkillSpector issue — which the individual findings already contribute to
-     * level(). So DO_NOT_INSTALL and CAUTION both floor at 'warning' here; only
-     * a located danger finding reaches 'danger' and quarantines.
-     *
-     * A failed/unavailable scan never raises the level.
+     * Aggregate recommendations cap at 'warning': ordinary documentation
+     * patterns can accumulate into DO_NOT_INSTALL. Concrete danger findings
+     * contribute separately through SkillCheckReport::level(). Failed or
+     * unavailable scans never raise the level.
      */
     public function levelFloor(): string
     {
@@ -217,5 +202,4 @@ final readonly class SkillspectorReport
         return mb_strlen($text) > self::TEXT_MAX ? mb_substr($text, 0, self::TEXT_MAX) . '…' : $text;
     }
 }
-
 

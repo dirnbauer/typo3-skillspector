@@ -20,9 +20,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * The decrypted key lives only in that returned array for the duration of one
  * scan — it is never persisted, logged or written into a report.
  *
- * Soft dependency: nr_llm is resolved lazily behind class_exists(), so
- * skillflow still works when nr_llm is absent (resolve() returns null and the
- * scanner falls back to static-only analysis).
+ * nr_llm is a required dependency. Missing provider configuration or an
+ * unavailable Vault key leaves the scanner in static-only mode.
  */
 final class NrLlmScanCredentials
 {
@@ -41,13 +40,10 @@ final class NrLlmScanCredentials
 
     /**
      * @return array<string, string>|null environment for a SkillSpector LLM scan,
-     *   or null when nr_llm is unavailable / has no usable HTTP provider + key
+     *   or null when nr_llm has no usable HTTP provider + key
      */
     public function resolve(): ?array
     {
-        if (!class_exists(LlmConfigurationRepository::class)) {
-            return null;
-        }
         try {
             $default = GeneralUtility::makeInstance(LlmConfigurationRepository::class)->findDefault();
             $model = $default?->getLlmModel();

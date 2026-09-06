@@ -21,7 +21,7 @@ final readonly class SkillCheckReport
     public function __construct(
         public array $findings,
         public LicenseAssessment $license,
-        /** True when the skill ships code (supporting code files or fenced code in the body). */
+        /** True when the imported body contains fenced code examples. */
         public bool $hasCode,
         public int $generatedAt,
         /** NVIDIA SkillSpector scan summary; null when the scan is disabled in the extension configuration. */
@@ -30,19 +30,9 @@ final readonly class SkillCheckReport
     }
 
     /**
-     * Highest severity across findings + the license warning + the SkillSpector
-     * aggregate, for the list badge. A 'danger' result is what quarantines a
-     * skill in a manual workflow, so only genuine danger reaches it:
-     *
-     *  - danger comes ONLY from a danger-SEVERITY finding (a located, concrete
-     *    pattern: exposed secret, pipe-to-shell, exfiltration endpoint, or a
-     *    CRITICAL SkillSpector issue);
-     *  - the license warning caps at 'warning' (never a hard block) and only
-     *    counts when the skill ships CODE — an odd license on instruction-only
-     *    content has nothing to reuse;
-     *  - the SkillSpector aggregate verdict (DO_NOT_INSTALL/CAUTION) caps at
-     *    'warning' too — advisory context, never a quarantine trigger on its
-     *    own (see SkillspectorReport::levelFloor).
+     * Highest advisory severity for the list badge. Only a concrete danger
+     * finding reaches 'danger'; code-license and aggregate recommendations
+     * can raise the level to 'warning'. This never changes skill state.
      */
     public function level(): string
     {
@@ -60,26 +50,6 @@ final readonly class SkillCheckReport
             $level = $floor;
         }
         return $level;
-    }
-
-    public function findingCount(): int
-    {
-        return count($this->findings);
-    }
-
-    /**
-     * The danger-severity findings — the concrete evidence that justifies a
-     * quarantine. Empty for a skill that is not quarantine-worthy, so the
-     * module can state exactly WHY a skill was hidden (or that it was not).
-     *
-     * @return list<SkillCheckFinding>
-     */
-    public function dangerFindings(): array
-    {
-        return array_values(array_filter(
-            $this->findings,
-            static fn (SkillCheckFinding $f): bool => $f->severity === SkillCheckFinding::SEVERITY_DANGER,
-        ));
     }
 
     /**
@@ -115,4 +85,3 @@ final readonly class SkillCheckReport
         ];
     }
 }
-

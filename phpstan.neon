@@ -3,9 +3,8 @@ includes:
 
 parameters:
     level: max
-    phpVersion: 80200
+    phpVersion: 80400
     paths:
         - Classes
     tmpDir: .Build/phpstan
     treatPhpDocTypesAsCertain: false
-

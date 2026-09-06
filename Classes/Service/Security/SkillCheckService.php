@@ -6,16 +6,11 @@ namespace Webconsulting\Skillspector\Service\Security;
 
 use Webconsulting\Skillspector\Domain\ParsedSkill;
 use Webconsulting\Skillspector\Domain\Security\SkillCheckReport;
-use Webconsulting\Skillspector\Domain\Security\SkillspectorReport;
 use Webconsulting\Skillspector\Support\Typed;
 
 /**
- * Runs the mandatory review checks on one imported skill: the built-in
- * security scan of the body + code examples, a license-compatibility
- * assessment against TYPO3's GPL-2.0-or-later, and — when the binary is
- * installed — an NVIDIA SkillSpector scan. Produces a SkillCheckReport the
- * inspector persists and the backend module renders. Never disables or hides
- * a skill: every state change remains an explicit administrator action.
+ * Combines advisory security, code-license and optional NVIDIA SkillSpector
+ * checks. The inspector persists the report without changing skill state.
  */
 final class SkillCheckService
 {
@@ -26,50 +21,22 @@ final class SkillCheckService
     ) {
     }
 
-    /**
-     * @param array<string, string> $files relative path => content (SKILL.md excluded)
-     */
-    public function check(ParsedSkill $skill, array $files): SkillCheckReport
+    public function check(ParsedSkill $skill): SkillCheckReport
     {
-        $hasCode = CodeDetection::skillHasCode($skill->body, $files);
-        $findings = $this->securityScanner->scan($skill->body, $files);
+        // nr_llm imports the instruction body, including fenced code examples.
+        $hasCode = preg_match(
+            '~```[ \t]*(php|phtml|js|javascript|ts|typescript|jsx|tsx|py|python|rb|ruby|go|golang|rust|rs|java|kotlin|kt|c|cpp|cs|csharp|sh|bash|shell|zsh|sql|pl|perl|lua|swift|scala|groovy|dart)\b~i',
+            $skill->body,
+        ) === 1;
+        $findings = $this->securityScanner->scan($skill->body);
         $license = $this->licenseChecker->assess($this->extractLicense($skill->metadata), $hasCode);
 
-        $skillspector = $this->skillspectorScanner->scan($skill, $files);
+        $skillspector = $this->skillspectorScanner->scan($skill);
         if ($skillspector !== null) {
             $findings = [...$findings, ...$skillspector->findings];
         }
 
         return new SkillCheckReport($findings, $license, $hasCode, time(), $skillspector);
-    }
-
-    /**
-     * Whether a stored check_report needs to be regenerated even though the
-     * skill content is unchanged: it is empty (skill imported before the
-     * checks existed), it predates the SkillSpector integration, or its
-     * SkillSpector scan was skipped because the binary was missing and the
-     * binary is available NOW (so installing SkillSpector upgrades existing
-     * reports on the next sync, without churning reports while it stays
-     * missing).
-     */
-    public function isReportStale(string $checkReportJson): bool
-    {
-        if (trim($checkReportJson) === '') {
-            return true;
-        }
-        if (!$this->skillspectorScanner->isEnabled()) {
-            return false;
-        }
-        $report = json_decode($checkReportJson, true);
-        if (!is_array($report)) {
-            return true;
-        }
-        $skillspector = $report['skillspector'] ?? null;
-        if (!is_array($skillspector)) {
-            return true;
-        }
-        return Typed::string($skillspector['status'] ?? null) === SkillspectorReport::STATUS_UNAVAILABLE
-            && $this->skillspectorScanner->isAvailable();
     }
 
     /**
@@ -92,4 +59,3 @@ final class SkillCheckService
         return null;
     }
 }
-

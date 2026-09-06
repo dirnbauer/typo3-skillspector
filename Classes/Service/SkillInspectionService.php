@@ -48,38 +48,28 @@ final class SkillInspectionService
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE);
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $rows = $queryBuilder->select('*')->from(self::TABLE)->orderBy('name')->executeQuery()->fetchAllAssociative();
-        $result = [];
-        foreach ($rows as $row) {
-            $result[] = $row;
-        }
-        return $result;
+        return array_values($queryBuilder->select('*')->from(self::TABLE)->orderBy('name')->executeQuery()->fetchAllAssociative());
     }
 
     /** @param array<string, mixed> $row */
     private function check(array $row): SkillCheckReport
     {
-        $metadata = json_decode(Typed::string($row['raw_frontmatter'] ?? ''), true);
-        if (!is_array($metadata) || array_is_list($metadata)) {
+        $metadata = Typed::stringKeyedArray(json_decode(Typed::string($row['raw_frontmatter'] ?? ''), true));
+        if (array_is_list($metadata)) {
             $metadata = [];
-        }
-        $normalizedMetadata = [];
-        foreach ($metadata as $key => $value) {
-            $normalizedMetadata[(string)$key] = $value;
         }
         $allowed = json_decode(Typed::string($row['allowed_tools'] ?? ''), true);
         $allowedTools = is_array($allowed) ? implode(',', array_values(array_filter($allowed, 'is_string'))) : '';
         $skill = new ParsedSkill(
-            Typed::string($row['identifier'] ?? ''),
             Typed::string($row['name'] ?? ''),
             Typed::string($row['description'] ?? ''),
             Typed::string($row['body'] ?? ''),
             $allowedTools,
-            $normalizedMetadata,
+            $metadata,
         );
         // nr_llm does not ingest referenced assets/scripts; partial support is
         // explicit in nr_llm and the inspector never downloads or executes them.
-        return $this->skillCheckService->check($skill, []);
+        return $this->skillCheckService->check($skill);
     }
 
     private function persist(int $uid, SkillCheckReport $report): void
@@ -117,4 +107,3 @@ final class SkillInspectionService
         return $messages;
     }
 }
-

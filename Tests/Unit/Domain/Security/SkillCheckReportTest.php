@@ -40,8 +40,7 @@ final class SkillCheckReportTest extends TestCase
 
     public function testDoNotInstallWithoutADangerFindingIsWarningNotDanger(): void
     {
-        // The severity-gated criterion: an aggregate DO_NOT_INSTALL driven by
-        // warning-level findings is advisory (warning) and must NOT quarantine.
+        // An aggregate recommendation must not be presented as concrete danger.
         $report = new SkillCheckReport(
             [self::finding('warning'), self::finding('warning')],
             self::compatibleLicense(),
@@ -51,10 +50,9 @@ final class SkillCheckReportTest extends TestCase
         );
 
         self::assertSame('warning', $report->level());
-        self::assertSame([], $report->dangerFindings());
     }
 
-    public function testDangerSeverityFindingReachesDangerAndIsTheQuarantineEvidence(): void
+    public function testDangerSeverityFindingReachesDangerAndKeepsItsEvidence(): void
     {
         $danger = self::finding('danger');
         $report = new SkillCheckReport(
@@ -66,7 +64,7 @@ final class SkillCheckReportTest extends TestCase
         );
 
         self::assertSame('danger', $report->level());
-        self::assertSame([$danger], $report->dangerFindings());
+        self::assertContains($danger->toArray(), $report->toArray()['findings']);
     }
 
     public function testCautionVerdictRaisesTheLevelToWarning(): void
@@ -100,7 +98,6 @@ final class SkillCheckReportTest extends TestCase
         );
 
         self::assertSame(['danger' => 1, 'warning' => 2, 'info' => 1], $report->severityCounts());
-        self::assertCount(1, $report->dangerFindings());
     }
 
     public function testToArrayCarriesSeverityCounts(): void
@@ -132,5 +129,4 @@ final class SkillCheckReportTest extends TestCase
         self::assertNull($report->toArray()['skillspector']);
     }
 }
-
 
