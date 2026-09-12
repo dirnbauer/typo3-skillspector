@@ -5,12 +5,12 @@
     "license": "GPL-2.0-or-later",
     "require": {
         "php": "^8.4",
-        "netresearch/nr-llm": "^0.25",
+        "netresearch/nr-llm": "^0.34",
         "symfony/process": "^7.0",
         "symfony/yaml": "^7.0",
-        "typo3/cms-backend": "^14.3",
-        "typo3/cms-core": "^14.3",
-        "typo3/cms-scheduler": "^14.3"
+        "typo3/cms-backend": "^14.3.7",
+        "typo3/cms-core": "^14.3.7",
+        "typo3/cms-scheduler": "^14.3.7"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.1",
