@@ -1,0 +1,10 @@
+..  menu::
+    :glob:
+    :maxdepth: 3
+    :titlesonly:
+
+    /Introduction/Index
+    /Installation/Index
+    /Configuration/Index
+    /Usage/Index
+    /Developer/Index

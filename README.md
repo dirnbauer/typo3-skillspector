@@ -1,69 +1,88 @@
-# Skills Inspector for TYPO3
+# Skillspector
 
-`webconsulting/skillspector` adds advisory security and license review to the
-skills managed by `netresearch/nr-llm`.
+[![TYPO3 14.3](https://img.shields.io/badge/TYPO3-14.3-orange.svg)](https://get.typo3.org/version/14)
+[![PHP 8.4](https://img.shields.io/badge/PHP-8.4%2B-777bb3.svg)](https://www.php.net/supported-versions.php)
+[![License: GPL-2.0-or-later](https://img.shields.io/badge/license-GPL--2.0--or--later-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 
-## Checks
+## What it is
 
-- prompt-injection, secret, exfiltration, and dangerous-command patterns;
-- NVIDIA [SkillSpector](https://github.com/NVIDIA/skillspector) when installed;
-- declared-license compatibility guidance for code copied into TYPO3's
-  `GPL-2.0-or-later` ecosystem.
+Advisory security and license review for the skills `netresearch/nr-llm` manages. A skill is instructions an LLM will follow; this extension reads those instructions before the LLM does and tells a human what it found.
 
-Checks cover the stored SKILL.md instructions, frontmatter and embedded code
-examples. nr_llm does not import referenced scripts or assets; the inspector
-does not fetch or scan those files.
+Three checks run over the stored SKILL.md body, its frontmatter and its embedded code examples:
 
-The inspector stores its report on `tx_nrllm_skill`. It never changes
-`enabled`, `orphaned`, or `hidden` during a check.
+| Check | Looks for | Result |
+|---|---|---|
+| Security scan | Prompt injection, secrets, exfiltration and dangerous commands | `info`, `warning` or `danger` findings |
+| License check | A declared license on a skill that ships code, and its compatibility with TYPO3's `GPL-2.0-or-later` ecosystem | A `warning` when code arrives undeclared or incompatible |
+| NVIDIA [SkillSpector](https://github.com/NVIDIA/skillspector) | Whatever the external scanner reports, when its binary is installed | A severity floor for the overall level |
+
+Everything is advisory. The report is written to `tx_nrllm_skill`; `enabled`, `orphaned` and `hidden` are never changed by a check. Hiding a skill stays an explicit administrator action. nr_llm does not import referenced scripts or assets, and this extension never fetches or executes them either.
+
+## Requirements
+
+- TYPO3 14.3 LTS
+- PHP 8.4+
+- `netresearch/nr-llm` 0.34+ (the skills and their storage)
+- Optional: the NVIDIA SkillSpector binary
 
 ## Install
 
-This lab installs the local package through the root Composer path repository.
-It requires PHP 8.4 and TYPO3 14.3. Package metadata lives in `composer.json`.
-
 ```bash
-ddev composer install
-ddev typo3 extension:setup
+composer require webconsulting/skillspector
+vendor/bin/typo3 extension:setup --extension=skillspector
 ```
 
-The DDEV post-start hook in `.ddev/config.skillspector.yaml` installs the
-optional NVIDIA scanner into its persistent pipx cache. Check it inside the
-web container with `ddev exec skillspector --version`. A missing binary leaves
-the built-in checks available and is reported as unavailable. Outside DDEV,
-install SkillSpector in the PHP runtime's environment with
-`uv tool install git+https://github.com/NVIDIA/skillspector.git`.
-
-Open **System → Skills Inspector**, run **Check all skills**, and review the
-evidence. **Hide** and **Unhide** are explicit administrator actions. nr_llm's
-own **enabled** toggle remains in **Admin Tools → LLM → Skills**.
-
-## Scheduler and notifications
-
-`skillspector:check` is a native schedulable Symfony command:
+The external scanner is optional. Install it into the PHP runtime's environment when you want it:
 
 ```bash
-ddev typo3 skillspector:check
+uv tool install git+https://github.com/NVIDIA/skillspector.git
 ```
 
-It refreshes reports and emits concrete action messages. It does not hide a
-skill automatically. Configure comma-separated `notificationRecipients` in
-the extension settings to email those messages; without recipients they remain
-in command output and TYPO3 logs. Use `--no-notify` to suppress notification
-delivery for a run.
+A missing binary is reported as unavailable; the built-in checks keep running.
 
-Static SkillSpector analysis is the default and sends no skill content away.
-Enabling `skillspectorUseLlm` reuses the default nr_llm provider and sends skill
-content to that provider for semantic analysis.
+## Configure
 
-## Development
+Extension settings (*Admin Tools > Settings > Extension Configuration*):
 
-Run from the lab root:
+| Setting | Default | Purpose |
+|---|---|---|
+| `skillspectorEnabled` | `1` | Run the NVIDIA scanner when its binary exists |
+| `skillspectorBinary` | `skillspector` | Path to that binary |
+| `skillspectorUseLlm` | `0` | Semantic analysis — **sends skill content to nr_llm's default provider** |
+| `skillspectorTimeout` | `120` | Seconds before the subprocess is killed |
+| `notificationRecipients` | *(empty)* | Comma-separated addresses for scheduled action messages |
+
+`skillspectorUseLlm` is the only setting that leaves the machine. It reuses the default nr_llm connection — provider, model and the vault-stored key — so no separate `SKILLSPECTOR_*` credentials are needed; the decrypted key lives only in the environment of one scan subprocess and is never persisted or logged.
+
+## Use
+
+Open **System > Skills Inspector**, run **Check all skills**, and read the evidence per skill.
+
+The same scan runs headless as a schedulable Symfony command:
 
 ```bash
-ddev exec Build/Scripts/runTests.sh -s unit -p 8.4
-ddev exec Build/Scripts/runTests.sh -s phpstan -p 8.4
+vendor/bin/typo3 skillspector:check
+vendor/bin/typo3 skillspector:check --no-notify
 ```
 
-Both suites include this package. The full `-s quality` suite also checks PHP
-syntax, Composer metadata, YAML, the frontend build and dependency audits.
+It refreshes every report and emits concrete action messages — *review this danger finding*, *this license needs a human decision*, *the external scanner did not complete*. It never hides a skill by itself. With `notificationRecipients` set, those messages are emailed; otherwise they stay in the command output and the TYPO3 log.
+
+## Develop
+
+```bash
+composer install
+composer ci                   # cgl, phpstan, unit, functional
+composer ci:tests:unit
+composer ci:tests:functional  # SQLite, no database server needed
+composer ci:phpstan           # level 8, no baseline
+composer ci:cgl -- --dry-run
+docker run --rm -v $PWD:/project ghcr.io/typo3-documentation/render-guides:latest --config=Documentation
+```
+
+## Docs
+
+Full manual in [`Documentation/`](Documentation/Index.rst): what each check does, installation, every extension setting, the backend module and the scheduler command, and a developer reference for adding a check.
+
+## License
+
+GPL-2.0-or-later

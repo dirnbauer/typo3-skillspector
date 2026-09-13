@@ -1,0 +1,14 @@
+..  Global includes and substitutions for every page of this manual.
+
+..  |extension_key| replace:: skillspector
+..  |composer_name| replace:: webconsulting/skillspector
+..  |extension_name| replace:: Skillspector
+
+..  role:: php(code)
+    :language: php
+
+..  role:: bash(code)
+    :language: bash
+
+..  role:: yaml(code)
+    :language: yaml
