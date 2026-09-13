@@ -4,8 +4,10 @@
 declare(strict_types=1);
 
 // Local process fixture: no network calls or actual skill execution.
-$directory = realpath($argv[2]);
-if ($directory === false || dirname($directory) !== getcwd() || !in_array('--no-llm', $argv, true)) {
+/** @var list<string> $arguments */
+$arguments = array_values(array_filter((array)($_SERVER['argv'] ?? []), 'is_string'));
+$directory = realpath($arguments[2] ?? '');
+if ($directory === false || dirname($directory) !== getcwd() || !in_array('--no-llm', $arguments, true)) {
     fwrite(STDERR, 'The scan must stay inside its own directory and use static analysis.');
     exit(2);
 }

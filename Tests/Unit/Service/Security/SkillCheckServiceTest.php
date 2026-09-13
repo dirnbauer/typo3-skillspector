@@ -16,6 +16,9 @@ use Webconsulting\Skillspector\Service\Security\SkillspectorScanner;
 
 final class SkillCheckServiceTest extends TestCase
 {
+    /**
+     * @param array<string, mixed> $metadata
+     */
     #[DataProvider('skills')]
     public function testStoredBodyAndLicenseProduceAnAdvisoryReportWithoutExternalScanning(string $body, array $metadata, bool $hasCode, string $level): void
     {
@@ -35,6 +38,9 @@ final class SkillCheckServiceTest extends TestCase
         self::assertSame($level, $report->toArray()['level']);
     }
 
+    /**
+     * @return iterable<string, array{string, array<string, mixed>, bool, string}>
+     */
     public static function skills(): iterable
     {
         yield 'instructions' => ['Follow the steps.', [], false, 'none'];

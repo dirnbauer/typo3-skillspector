@@ -57,6 +57,9 @@ final class SkillspectorScannerTest extends TestCase
         self::assertSame('Another scan owns this file.', file_get_contents($this->varPath . '/transient/skillspector/keep.txt'));
     }
 
+    /**
+     * @return iterable<string, array{string, string, string}|array{string, string, string, string}>
+     */
     public static function skills(): iterable
     {
         yield 'normal name' => ['example', 'Harmless instructions.', 'ok'];
