@@ -1,0 +1,106 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  PHP_VERSION: '8.4'
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+      - name: Validate composer.json
+        run: composer validate --strict
+      - name: Install dependencies
+        run: composer install --no-progress --no-interaction
+      - name: Audit dependencies
+        run: composer audit
+      - name: PHP syntax
+        run: find Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n1 php -l
+
+  cgl:
+    name: Coding standards
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+      - run: composer install --no-progress --no-interaction
+      - run: composer ci:cgl -- --dry-run
+
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+          ini-values: memory_limit=1G
+      - run: composer install --no-progress --no-interaction
+      - run: composer ci:phpstan
+
+  unit:
+    name: Unit tests (PHP ${{ matrix.php-version }})
+    runs-on: ubuntu-24.04
+    continue-on-error: ${{ matrix.php-version == '8.5' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.4', '8.5']
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+      - run: composer install --no-progress --no-interaction
+      - run: composer ci:tests:unit
+
+  functional:
+    name: Functional tests (MariaDB)
+    runs-on: ubuntu-24.04
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: typo3_ci
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      typo3DatabaseDriver: mysqli
+      typo3DatabaseName: typo3_ci
+      typo3DatabaseHost: 127.0.0.1
+      typo3DatabasePort: 3306
+      typo3DatabaseUsername: root
+      typo3DatabasePassword: root
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+      - run: composer install --no-progress --no-interaction
+      - run: composer ci:tests:functional
