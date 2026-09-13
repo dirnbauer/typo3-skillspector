@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+    Functional test suite of EXT:skillspector.
+
+    Defaults to SQLite so a local run needs no database server:
+    `composer ci:tests:functional` works out of the box. CI overrides the
+    typo3Database* environment variables to run the same suite on MariaDB —
+    <env> entries without force="true" never overwrite an existing value.
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.4/phpunit.xsd"
+         backupGlobals="true"
+         bootstrap="../../vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTestsBootstrap.php"
+         cacheDirectory="../../.Build/.cache/phpunit"
+         colors="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnTestsThatTriggerErrors="true"
+         displayDetailsOnTestsThatTriggerNotices="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         failOnDeprecation="true"
+         failOnNotice="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         requireCoverageMetadata="false"
+>
+    <testsuites>
+        <testsuite name="Functional tests">
+            <directory>../../Tests/Functional/</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>../../Classes</directory>
+        </include>
+    </source>
+    <php>
+        <ini name="display_errors" value="1"/>
+        <env name="TYPO3_CONTEXT" value="Testing"/>
+        <env name="typo3DatabaseDriver" value="pdo_sqlite"/>
+    </php>
+</phpunit>
