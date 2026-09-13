@@ -22,7 +22,7 @@ final class SkillCheckServiceTest extends TestCase
     #[DataProvider('skills')]
     public function testStoredBodyAndLicenseProduceAnAdvisoryReportWithoutExternalScanning(string $body, array $metadata, bool $hasCode, string $level): void
     {
-        $configuration = $this->createStub(ExtensionConfiguration::class);
+        $configuration = self::createStub(ExtensionConfiguration::class);
         $configuration->method('get')->willReturn(['skillspectorEnabled' => 0]);
         $service = new SkillCheckService(
             new SkillSecurityScanner(),

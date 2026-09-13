@@ -44,8 +44,7 @@ final class SkillspectorScanner
     public function __construct(
         private readonly ExtensionConfiguration $extensionConfiguration,
         private readonly NrLlmScanCredentials $nrLlmScanCredentials,
-    ) {
-    }
+    ) {}
 
     /**
      * @return SkillspectorReport|null null when the scan is disabled in the extension configuration

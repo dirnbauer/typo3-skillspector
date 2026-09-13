@@ -13,7 +13,5 @@ final readonly class ScanSummary
         public int $warning,
         public int $info,
         public array $messages,
-    ) {
-    }
+    ) {}
 }
-

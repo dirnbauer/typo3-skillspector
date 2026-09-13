@@ -26,8 +26,7 @@ final readonly class SkillCheckReport
         public int $generatedAt,
         /** NVIDIA SkillSpector scan summary; null when the scan is disabled in the extension configuration. */
         public ?SkillspectorReport $skillspector = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Highest advisory severity for the list badge. Only a concrete danger
@@ -80,7 +79,7 @@ final readonly class SkillCheckReport
             'level' => $this->level(),
             'severityCounts' => $this->severityCounts(),
             'license' => $this->license->toArray(),
-            'findings' => array_map(static fn (SkillCheckFinding $f): array => $f->toArray(), $this->findings),
+            'findings' => array_map(static fn(SkillCheckFinding $f): array => $f->toArray(), $this->findings),
             'skillspector' => $this->skillspector?->toArray(),
         ];
     }

@@ -10,9 +10,7 @@ namespace Webconsulting\Skillspector\Support;
  */
 final class Typed
 {
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     public static function string(mixed $value): string
     {
@@ -51,5 +49,3 @@ final class Typed
         return $result;
     }
 }
-
-

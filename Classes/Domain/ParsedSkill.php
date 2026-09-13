@@ -20,6 +20,5 @@ final readonly class ParsedSkill
         public string $body,
         public string $allowedTools,
         public array $metadata,
-    ) {
-    }
+    ) {}
 }

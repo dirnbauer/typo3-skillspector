@@ -23,4 +23,3 @@ $GLOBALS['TCA']['tx_nrllm_skill']['columns'] += [
     'tx_nrllm_skill',
     '--div--;LLL:EXT:skillspector/Resources/Private/Language/locallang_db.xlf:tab.review, tx_skillspector_check_level, tx_skillspector_checked_at, tx_skillspector_check_report'
 );
-

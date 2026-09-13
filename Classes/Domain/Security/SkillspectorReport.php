@@ -62,8 +62,7 @@ final readonly class SkillspectorReport
         public string $note,
         /** Issues mapped to review findings; merged into the main findings list, NOT serialized here. */
         public array $findings,
-    ) {
-    }
+    ) {}
 
     public static function unavailable(string $note): self
     {
@@ -202,4 +201,3 @@ final readonly class SkillspectorReport
         return mb_strlen($text) > self::TEXT_MAX ? mb_substr($text, 0, self::TEXT_MAX) . '…' : $text;
     }
 }
-

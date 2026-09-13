@@ -87,5 +87,3 @@ final class NrLlmScanCredentialsTest extends TestCase
         self::assertNull(NrLlmScanCredentials::mapEnv('openai', '', 'm', 'https://api.openai.com/v1'));
     }
 }
-
-

@@ -129,4 +129,3 @@ final class SkillCheckReportTest extends TestCase
         self::assertNull($report->toArray()['skillspector']);
     }
 }
-

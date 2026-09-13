@@ -42,4 +42,3 @@ final class CheckSkillsCommand extends Command
         return Command::SUCCESS;
     }
 }
-

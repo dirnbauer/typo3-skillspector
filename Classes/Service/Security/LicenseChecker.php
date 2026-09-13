@@ -146,5 +146,3 @@ final class LicenseChecker
         return $key;
     }
 }
-
-

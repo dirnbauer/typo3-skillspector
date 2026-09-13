@@ -106,5 +106,3 @@ final class NrLlmScanCredentials
         return $env;
     }
 }
-
-

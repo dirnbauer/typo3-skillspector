@@ -244,5 +244,3 @@ final class SkillspectorReportTest extends TestCase
         self::assertSame('timeout', $report->note);
     }
 }
-
-

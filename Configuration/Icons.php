@@ -10,4 +10,3 @@ return [
         'source' => 'EXT:skillspector/Resources/Public/Icons/Module.svg',
     ],
 ];
-

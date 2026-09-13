@@ -22,8 +22,7 @@ final class SkillspectorController
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly UriBuilder $uriBuilder,
         private readonly SkillInspectionService $inspectionService,
-    ) {
-    }
+    ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
@@ -123,4 +122,3 @@ final class SkillspectorController
         return $user;
     }
 }
-

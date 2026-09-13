@@ -18,8 +18,7 @@ final class SkillCheckService
         private readonly SkillSecurityScanner $securityScanner,
         private readonly LicenseChecker $licenseChecker,
         private readonly SkillspectorScanner $skillspectorScanner,
-    ) {
-    }
+    ) {}
 
     public function check(ParsedSkill $skill): SkillCheckReport
     {

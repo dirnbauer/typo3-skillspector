@@ -40,7 +40,7 @@ final class SkillspectorScannerTest extends TestCase
     public function testScanStaysIsolatedAndCleansUpAfterSuccessOrFailure(string $name, string $body, string $status, string $folderMask = '0700'): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = $folderMask;
-        $configuration = $this->createStub(ExtensionConfiguration::class);
+        $configuration = self::createStub(ExtensionConfiguration::class);
         $configuration->method('get')->willReturn([
             'skillspectorEnabled' => 1,
             'skillspectorUseLlm' => 0,

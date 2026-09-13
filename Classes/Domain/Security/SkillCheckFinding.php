@@ -28,8 +28,7 @@ final readonly class SkillCheckFinding
         public string $evidence,
         /** What the reviewer should verify about this match. */
         public string $whatToCheck,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array{id: string, severity: string, category: string, location: string, evidence: string, whatToCheck: string}
@@ -46,5 +45,3 @@ final readonly class SkillCheckFinding
         ];
     }
 }
-
-

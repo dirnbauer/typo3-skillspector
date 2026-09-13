@@ -87,4 +87,3 @@ final class SkillSecurityScannerTest extends TestCase
         self::assertSame('danger', $rce['pipe_to_shell'] ?? null);
     }
 }
-

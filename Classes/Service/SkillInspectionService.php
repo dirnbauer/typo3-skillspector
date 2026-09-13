@@ -21,8 +21,7 @@ final class SkillInspectionService
     public function __construct(
         private readonly ConnectionPool $connectionPool,
         private readonly SkillCheckService $skillCheckService,
-    ) {
-    }
+    ) {}
 
     public function scanAll(): ScanSummary
     {

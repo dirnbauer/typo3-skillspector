@@ -7,8 +7,8 @@ namespace Webconsulting\Skillspector\Service;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Mail\MailMessage;
 use Webconsulting\Skillspector\Domain\ScanSummary;
 use Webconsulting\Skillspector\Support\Typed;
 
@@ -18,8 +18,7 @@ final class AdvisoryNotifier
         private readonly ExtensionConfiguration $extensionConfiguration,
         private readonly MailerInterface $mailer,
         private readonly LoggerInterface $logger,
-    ) {
-    }
+    ) {}
 
     public function notify(ScanSummary $summary): void
     {
@@ -58,4 +57,3 @@ final class AdvisoryNotifier
         return array_values(array_filter($values, static fn(string $value): bool => filter_var($value, FILTER_VALIDATE_EMAIL) !== false));
     }
 }
-

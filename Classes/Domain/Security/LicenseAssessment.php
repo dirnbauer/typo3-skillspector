@@ -31,8 +31,7 @@ final readonly class LicenseAssessment
         public string $message,
         /** What the reviewer should verify (empty when nothing to do). */
         public string $whatToCheck,
-    ) {
-    }
+    ) {}
 
     public function isWarning(): bool
     {
@@ -53,5 +52,3 @@ final readonly class LicenseAssessment
         ];
     }
 }
-
-
