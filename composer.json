@@ -12,7 +12,7 @@
     ],
     "require": {
         "php": "^8.4",
-        "netresearch/nr-llm": "^0.34",
+        "netresearch/nr-llm": "^0.34 || ^0.35",
         "symfony/process": "^7.0",
         "symfony/yaml": "^7.0",
         "typo3/cms-backend": "^14.3.7",
