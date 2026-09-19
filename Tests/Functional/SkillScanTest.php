@@ -10,6 +10,8 @@ use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Webconsulting\Skillspector\Domain\ParsedSkill;
+use Webconsulting\Skillspector\Domain\Security\Severity;
+use Webconsulting\Skillspector\Domain\Security\SkillCheckFinding;
 use Webconsulting\Skillspector\Service\Security\SkillCheckService;
 use Webconsulting\Skillspector\Service\SkillInspectionService;
 
@@ -24,10 +26,6 @@ use Webconsulting\Skillspector\Service\SkillInspectionService;
  */
 final class SkillScanTest extends FunctionalTestCase
 {
-    protected array $coreExtensionsToLoad = [
-        'scheduler',
-    ];
-
     protected array $testExtensionsToLoad = [
         'netresearch/nr-vault',
         'netresearch/nr-llm',
@@ -43,22 +41,22 @@ final class SkillScanTest extends FunctionalTestCase
     ];
 
     /**
-     * @return iterable<string, array{string, string}>
+     * @return iterable<string, array{string, Severity}>
      */
     public static function skillFiles(): iterable
     {
-        yield 'instructions only, license declared' => ['tidy-pages', 'none'];
-        yield 'pipes a remote script into a shell' => ['install-helper', 'danger'];
-        yield 'ships code without a license' => ['snippet-library', 'warning'];
+        yield 'instructions only, license declared' => ['tidy-pages', Severity::None];
+        yield 'pipes a remote script into a shell' => ['install-helper', Severity::Danger];
+        yield 'ships code without a license' => ['snippet-library', Severity::Warning];
     }
 
     #[DataProvider('skillFiles')]
     #[Test]
-    public function fixtureSkillFilesGetTheExpectedAdvisoryLevel(string $fixture, string $expectedLevel): void
+    public function fixtureSkillFilesGetTheExpectedAdvisoryLevel(string $fixture, Severity $expectedLevel): void
     {
         $report = $this->get(SkillCheckService::class)->check(self::parseSkillFile($fixture));
 
-        self::assertSame($expectedLevel, $report->level(), json_encode($report->toArray()) ?: '');
+        self::assertSame($expectedLevel, $report->level, json_encode($report->toArray()) ?: '');
         self::assertNull($report->skillspector, 'The subprocess must not run when it is switched off.');
     }
 
@@ -67,10 +65,10 @@ final class SkillScanTest extends FunctionalTestCase
     {
         $report = $this->get(SkillCheckService::class)->check(self::parseSkillFile('install-helper'));
 
-        self::assertSame('danger', $report->level());
+        self::assertSame(Severity::Danger, $report->level);
         self::assertNotSame([], $report->findings);
-        self::assertContains('danger', array_map(
-            static fn(object $finding): string => $finding->severity,
+        self::assertContains(Severity::Danger, array_map(
+            static fn(SkillCheckFinding $finding): Severity => $finding->severity,
             $report->findings,
         ));
     }

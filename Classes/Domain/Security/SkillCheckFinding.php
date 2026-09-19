@@ -11,15 +11,10 @@ namespace Webconsulting\Skillspector\Domain\Security;
  */
 final readonly class SkillCheckFinding
 {
-    public const SEVERITY_INFO = 'info';
-    public const SEVERITY_WARNING = 'warning';
-    public const SEVERITY_DANGER = 'danger';
-
     public function __construct(
         /** Machine id of the matched rule, e.g. 'pipe_to_shell'. */
         public string $id,
-        /** info | warning | danger */
-        public string $severity,
+        public Severity $severity,
         /** Short human category, e.g. 'Destructive command'. */
         public string $category,
         /** Where it matched: 'body' or a supporting file's relative path. */
@@ -37,7 +32,7 @@ final readonly class SkillCheckFinding
     {
         return [
             'id' => $this->id,
-            'severity' => $this->severity,
+            'severity' => $this->severity->value,
             'category' => $this->category,
             'location' => $this->location,
             'evidence' => $this->evidence,

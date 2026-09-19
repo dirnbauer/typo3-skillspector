@@ -6,7 +6,8 @@ namespace Webconsulting\Skillspector\Tests\Unit\Domain\Security;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Webconsulting\Skillspector\Domain\Security\SkillCheckFinding;
+use Webconsulting\Skillspector\Domain\Security\ScanStatus;
+use Webconsulting\Skillspector\Domain\Security\Severity;
 use Webconsulting\Skillspector\Domain\Security\SkillspectorReport;
 
 final class SkillspectorReportTest extends TestCase
@@ -37,7 +38,7 @@ final class SkillspectorReportTest extends TestCase
     {
         $report = SkillspectorReport::fromScanOutput(self::scanJson());
 
-        self::assertSame(SkillspectorReport::STATUS_OK, $report->status);
+        self::assertSame(ScanStatus::Ok, $report->status);
         self::assertSame(82, $report->score);
         self::assertSame('CRITICAL', $report->severity);
         self::assertSame('DO_NOT_INSTALL', $report->recommendation);
@@ -50,7 +51,7 @@ final class SkillspectorReportTest extends TestCase
     {
         $report = SkillspectorReport::fromScanOutput("Scanning ./evil-skill ...\nDone.\n" . self::scanJson());
 
-        self::assertSame(SkillspectorReport::STATUS_OK, $report->status);
+        self::assertSame(ScanStatus::Ok, $report->status);
         self::assertSame(82, $report->score);
     }
 
@@ -58,9 +59,9 @@ final class SkillspectorReportTest extends TestCase
     {
         $report = SkillspectorReport::fromScanOutput('Traceback (most recent call last): boom');
 
-        self::assertSame(SkillspectorReport::STATUS_ERROR, $report->status);
+        self::assertSame(ScanStatus::Error, $report->status);
         self::assertSame(-1, $report->score);
-        self::assertSame('none', $report->levelFloor());
+        self::assertSame(Severity::None, $report->levelFloor());
         self::assertSame([], $report->findings);
         self::assertNotSame('', $report->note);
     }
@@ -80,20 +81,20 @@ final class SkillspectorReportTest extends TestCase
      * quarantines on its own. Only a located danger-severity finding reaches
      * 'danger' (covered in SkillCheckReportTest).
      *
-     * @return array<string, array{0: string, 1: string}>
+     * @return array<string, array{0: string, 1: Severity}>
      */
     public static function recommendationFloors(): array
     {
         return [
-            'DO_NOT_INSTALL is advisory (warning, not danger)' => ['DO_NOT_INSTALL', 'warning'],
-            'CAUTION warns' => ['CAUTION', 'warning'],
-            'SAFE stays none' => ['SAFE', 'none'],
-            'unknown stays none' => ['SOMETHING_NEW', 'none'],
+            'DO_NOT_INSTALL is advisory (warning, not danger)' => ['DO_NOT_INSTALL', Severity::Warning],
+            'CAUTION warns' => ['CAUTION', Severity::Warning],
+            'SAFE stays none' => ['SAFE', Severity::None],
+            'unknown stays none' => ['SOMETHING_NEW', Severity::None],
         ];
     }
 
     #[DataProvider('recommendationFloors')]
-    public function testLevelFloorFollowsTheInstallRecommendation(string $recommendation, string $expected): void
+    public function testLevelFloorFollowsTheInstallRecommendation(string $recommendation, Severity $expected): void
     {
         $report = SkillspectorReport::fromScanOutput(self::scanJson([], $recommendation));
 
@@ -108,27 +109,27 @@ final class SkillspectorReportTest extends TestCase
             ['id' => 'RP2', 'category' => 'MCP Rug Pull', 'severity' => 'MEDIUM'],
         ], 'DO_NOT_INSTALL'));
 
-        self::assertSame('warning', $report->levelFloor());
-        self::assertNotSame('danger', $report->levelFloor());
+        self::assertSame(Severity::Warning, $report->levelFloor());
+        self::assertNotSame(Severity::Danger, $report->levelFloor());
     }
 
     /**
-     * @return array<string, array{0: string, 1: string}>
+     * @return array<string, array{0: string, 1: Severity}>
      */
     public static function issueSeverities(): array
     {
         return [
-            'CRITICAL maps to danger' => ['CRITICAL', SkillCheckFinding::SEVERITY_DANGER],
-            'HIGH maps to warning' => ['HIGH', SkillCheckFinding::SEVERITY_WARNING],
-            'MEDIUM maps to warning' => ['MEDIUM', SkillCheckFinding::SEVERITY_WARNING],
-            'LOW maps to info' => ['LOW', SkillCheckFinding::SEVERITY_INFO],
-            'lowercase input is normalized' => ['critical', SkillCheckFinding::SEVERITY_DANGER],
-            'unknown maps to info' => ['BANANAS', SkillCheckFinding::SEVERITY_INFO],
+            'CRITICAL maps to danger' => ['CRITICAL', Severity::Danger],
+            'HIGH maps to warning' => ['HIGH', Severity::Warning],
+            'MEDIUM maps to warning' => ['MEDIUM', Severity::Warning],
+            'LOW maps to info' => ['LOW', Severity::Info],
+            'lowercase input is normalized' => ['critical', Severity::Danger],
+            'unknown maps to info' => ['BANANAS', Severity::Info],
         ];
     }
 
     #[DataProvider('issueSeverities')]
-    public function testIssueSeverityMapping(string $spectorSeverity, string $expected): void
+    public function testIssueSeverityMapping(string $spectorSeverity, Severity $expected): void
     {
         $report = SkillspectorReport::fromScanOutput(self::scanJson([
             ['id' => 'prompt_injection_1', 'category' => 'Prompt Injection', 'severity' => $spectorSeverity, 'confidence' => 0.9, 'location' => ['file' => 'SKILL.md', 'start_line' => 12]],
@@ -229,8 +230,8 @@ final class SkillspectorReportTest extends TestCase
     {
         $report = SkillspectorReport::unavailable('binary not found — install it');
 
-        self::assertSame(SkillspectorReport::STATUS_UNAVAILABLE, $report->status);
-        self::assertSame('none', $report->levelFloor());
+        self::assertSame(ScanStatus::Unavailable, $report->status);
+        self::assertSame(Severity::None, $report->levelFloor());
         self::assertSame('binary not found — install it', $report->note);
         self::assertSame([], $report->findings);
     }
@@ -239,8 +240,8 @@ final class SkillspectorReportTest extends TestCase
     {
         $report = SkillspectorReport::error('timeout');
 
-        self::assertSame(SkillspectorReport::STATUS_ERROR, $report->status);
-        self::assertSame('none', $report->levelFloor());
+        self::assertSame(ScanStatus::Error, $report->status);
+        self::assertSame(Severity::None, $report->levelFloor());
         self::assertSame('timeout', $report->note);
     }
 }

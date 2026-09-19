@@ -11,22 +11,12 @@ namespace Webconsulting\Skillspector\Domain\Security;
  */
 final readonly class LicenseAssessment
 {
-    /** Clearly usable in a GPL-2.0-or-later project (permissive or GPL-2-compatible). */
-    public const STATUS_COMPATIBLE = 'compatible';
-    /** Usable only under conditions (e.g. the "or-later"/v3 path); review before redistributing. */
-    public const STATUS_REVIEW = 'review';
-    /** Non-free or GPL-incompatible; redistribution under GPL-2.0-or-later is doubtful. */
-    public const STATUS_INCOMPATIBLE = 'incompatible';
-    /** No license declared. */
-    public const STATUS_UNKNOWN = 'unknown';
-
     public function __construct(
         /** The raw value from the skill frontmatter, e.g. 'Apache-2.0' or '' . */
         public string $declared,
         /** Normalised label, e.g. 'Apache-2.0', 'GPL-2.0-or-later', 'unknown'. */
         public string $normalized,
-        /** compatible | review | incompatible | unknown */
-        public string $status,
+        public LicenseStatus $status,
         /** One-line explanation of the status. */
         public string $message,
         /** What the reviewer should verify (empty when nothing to do). */
@@ -35,7 +25,7 @@ final readonly class LicenseAssessment
 
     public function isWarning(): bool
     {
-        return $this->status !== self::STATUS_COMPATIBLE;
+        return $this->status !== LicenseStatus::Compatible;
     }
 
     /**
@@ -46,7 +36,7 @@ final readonly class LicenseAssessment
         return [
             'declared' => $this->declared,
             'normalized' => $this->normalized,
-            'status' => $this->status,
+            'status' => $this->status->value,
             'message' => $this->message,
             'whatToCheck' => $this->whatToCheck,
         ];

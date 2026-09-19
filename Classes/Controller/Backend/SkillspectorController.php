@@ -28,9 +28,13 @@ final class SkillspectorController
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $moduleTemplate->setTitle('Skills Inspector');
+        // The module is declared `access: admin`, so the router already turns
+        // non-administrators away; this is the second lock on a view that
+        // shows every skill body verbatim.
         if (!$this->backendUser()->isAdmin()) {
             return $moduleTemplate->renderResponse('Backend/Skillspector/Denied');
         }
+
         $body = Typed::stringKeyedArray($request->getParsedBody());
         if ($request->getMethod() === 'POST') {
             match (Typed::string($body['action'] ?? '')) {
@@ -39,6 +43,7 @@ final class SkillspectorController
                 default => null,
             };
         }
+
         return $this->renderList($moduleTemplate);
     }
 
@@ -65,6 +70,7 @@ final class SkillspectorController
         $dataHandler->process_datamap();
         if ($dataHandler->errorLog !== []) {
             $moduleTemplate->addFlashMessage(implode(' | ', array_map(Typed::string(...), $dataHandler->errorLog)), 'State change failed', ContextualFeedbackSeverity::ERROR);
+
             return;
         }
         $moduleTemplate->addFlashMessage(
@@ -76,40 +82,47 @@ final class SkillspectorController
 
     private function renderList(ModuleTemplate $moduleTemplate): ResponseInterface
     {
-        $skills = $this->inspectionService->findAll();
         $returnUrl = (string)$this->uriBuilder->buildUriFromRoute('skillspector');
-        foreach ($skills as &$skill) {
-            $skill['editUri'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
-                'edit' => ['tx_nrllm_skill' => [Typed::int($skill['uid'] ?? 0) => 'edit']],
-                'returnUrl' => $returnUrl,
-            ]);
-            $skill['review'] = $this->reviewView(Typed::string($skill['tx_skillspector_check_report'] ?? ''));
-            $skill['checkedFormatted'] = Typed::int($skill['tx_skillspector_checked_at'] ?? 0) > 0
-                ? date('Y-m-d H:i', Typed::int($skill['tx_skillspector_checked_at']))
-                : 'Never';
-        }
-        unset($skill);
+        $skills = array_map(
+            fn(array $row): array => $row + [
+                'editUri' => (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
+                    'edit' => ['tx_nrllm_skill' => [Typed::int($row['uid'] ?? 0) => 'edit']],
+                    'returnUrl' => $returnUrl,
+                ]),
+                'review' => self::reviewView(Typed::string($row['tx_skillspector_check_report'] ?? '')),
+                'checkedFormatted' => Typed::int($row['tx_skillspector_checked_at'] ?? 0) > 0
+                    ? date('Y-m-d H:i', Typed::int($row['tx_skillspector_checked_at']))
+                    : 'Never',
+            ],
+            $this->inspectionService->findAll(),
+        );
+
         $moduleTemplate->assignMultiple([
             'moduleUri' => $returnUrl,
             'nrLlmSkillsUri' => (string)$this->uriBuilder->buildUriFromRoute('nrllm_skills'),
             'skills' => $skills,
         ]);
+
         return $moduleTemplate->renderResponse('Backend/Skillspector/List');
     }
 
-    /** @return array<string, mixed> */
-    private function reviewView(string $json): array
+    /**
+     * The stored report, reshaped for the template. A skill that was never
+     * checked has no report at all, so every key is defaulted rather than
+     * conditionally assigned — the template can read all of them.
+     *
+     * @return array<string, mixed>
+     */
+    private static function reviewView(string $json): array
     {
-        $report = json_decode($json, true);
-        if (!is_array($report)) {
-            return ['level' => 'unchecked', 'findings' => [], 'license' => [], 'skillspector' => []];
-        }
+        $report = Typed::stringKeyedArray(json_decode($json, true));
+
         return [
-            'level' => Typed::string($report['level'] ?? 'unchecked'),
-            'findings' => is_array($report['findings'] ?? null) ? $report['findings'] : [],
-            'license' => is_array($report['license'] ?? null) ? $report['license'] : [],
-            'skillspector' => is_array($report['skillspector'] ?? null) ? $report['skillspector'] : [],
-            'severityCounts' => is_array($report['severityCounts'] ?? null) ? $report['severityCounts'] : [],
+            'level' => Typed::string($report['level'] ?? null) ?: 'unchecked',
+            'severityCounts' => Typed::stringKeyedArray($report['severityCounts'] ?? null),
+            'findings' => array_values(Typed::stringKeyedArray($report['findings'] ?? null)),
+            'license' => Typed::stringKeyedArray($report['license'] ?? null),
+            'skillspector' => Typed::stringKeyedArray($report['skillspector'] ?? null),
         ];
     }
 
@@ -117,8 +130,9 @@ final class SkillspectorController
     {
         $user = $GLOBALS['BE_USER'] ?? null;
         if (!$user instanceof BackendUserAuthentication) {
-            throw new \RuntimeException('No backend user available');
+            throw new \RuntimeException('No backend user available', 1789776000);
         }
+
         return $user;
     }
 }

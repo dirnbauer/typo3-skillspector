@@ -8,11 +8,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Webconsulting\Skillspector\Domain\ExtensionSettings;
 use Webconsulting\Skillspector\Domain\ParsedSkill;
+use Webconsulting\Skillspector\Domain\Security\ScanStatus;
 use Webconsulting\Skillspector\Service\Security\NrLlmScanCredentials;
 use Webconsulting\Skillspector\Service\Security\SkillspectorScanner;
 
@@ -37,16 +38,15 @@ final class SkillspectorScannerTest extends TestCase
     }
 
     #[DataProvider('skills')]
-    public function testScanStaysIsolatedAndCleansUpAfterSuccessOrFailure(string $name, string $body, string $status, string $folderMask = '0700'): void
+    public function testScanStaysIsolatedAndCleansUpAfterSuccessOrFailure(string $name, string $body, ScanStatus $status, string $folderMask = '0700'): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = $folderMask;
-        $configuration = self::createStub(ExtensionConfiguration::class);
-        $configuration->method('get')->willReturn([
+        $settings = ExtensionSettings::fromArray([
             'skillspectorEnabled' => 1,
             'skillspectorUseLlm' => 0,
             'skillspectorBinary' => __DIR__ . '/../../../Fixtures/skillspector.php',
         ]);
-        $scanner = new SkillspectorScanner($configuration, new NrLlmScanCredentials());
+        $scanner = new SkillspectorScanner($settings, new NrLlmScanCredentials());
         $skill = new ParsedSkill($name, 'Example skill', $body, '', []);
 
         $report = $scanner->scan($skill);
@@ -58,16 +58,16 @@ final class SkillspectorScannerTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{string, string, string}|array{string, string, string, string}>
+     * @return iterable<string, array{string, string, ScanStatus}|array{string, string, ScanStatus, string}>
      */
     public static function skills(): iterable
     {
-        yield 'normal name' => ['example', 'Harmless instructions.', 'ok'];
-        yield 'dotted name' => ['example.skill', 'Harmless instructions.', 'ok'];
-        yield 'current directory' => ['.', 'Harmless instructions.', 'ok'];
-        yield 'parent directory' => ['..', 'Harmless instructions.', 'ok'];
-        yield 'empty name' => ['', 'Harmless instructions.', 'ok'];
-        yield 'process failure' => ['example', 'FAIL_SCAN', 'error'];
-        yield 'preparation failure' => ['example', 'Harmless instructions.', 'error', '0500'];
+        yield 'normal name' => ['example', 'Harmless instructions.', ScanStatus::Ok];
+        yield 'dotted name' => ['example.skill', 'Harmless instructions.', ScanStatus::Ok];
+        yield 'current directory' => ['.', 'Harmless instructions.', ScanStatus::Ok];
+        yield 'parent directory' => ['..', 'Harmless instructions.', ScanStatus::Ok];
+        yield 'empty name' => ['', 'Harmless instructions.', ScanStatus::Ok];
+        yield 'process failure' => ['example', 'FAIL_SCAN', ScanStatus::Error];
+        yield 'preparation failure' => ['example', 'Harmless instructions.', ScanStatus::Error, '0500'];
     }
 }

@@ -7,10 +7,15 @@ services:
   Webconsulting\Skillspector\:
     resource: '../Classes/*'
     exclude:
-      - '../Classes/Domain/*'
-      - '../Classes/Domain/Security/*'
-      - '../Classes/Support/*'
+      # Value objects, not services.
+      - '../Classes/Domain'
+      - '../Classes/Support'
+
+  # Built from the extension configuration, once per container.
+  Webconsulting\Skillspector\Domain\ExtensionSettings:
+    factory: ['Webconsulting\Skillspector\Domain\ExtensionSettings', 'load']
+    arguments:
+      - '@TYPO3\CMS\Core\Configuration\ExtensionConfiguration'
 
   Webconsulting\Skillspector\Controller\Backend\SkillspectorController:
     public: true
-

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Webconsulting\Skillspector\Service\Security;
 
 use Webconsulting\Skillspector\Domain\Security\LicenseAssessment;
+use Webconsulting\Skillspector\Domain\Security\LicenseStatus;
 
 /**
  * Compares a skill's declared license against TYPO3's own license,
@@ -80,7 +81,7 @@ final class LicenseChecker
             return new LicenseAssessment(
                 $raw,
                 'unknown',
-                LicenseAssessment::STATUS_UNKNOWN,
+                LicenseStatus::Unknown,
                 'No license declared.',
                 $hasCode
                     ? 'This skill ships code examples with no declared license. Reuse/redistribution terms are unverified — confirm the source permits use under ' . self::TYPO3_LICENSE . ' before copying its code.'
@@ -93,7 +94,7 @@ final class LicenseChecker
             return new LicenseAssessment(
                 $raw,
                 $label,
-                LicenseAssessment::STATUS_COMPATIBLE,
+                LicenseStatus::Compatible,
                 $label . ' is compatible with ' . self::TYPO3_LICENSE . '.',
                 '',
             );
@@ -104,7 +105,7 @@ final class LicenseChecker
             return new LicenseAssessment(
                 $raw,
                 $entry['label'],
-                LicenseAssessment::STATUS_REVIEW,
+                LicenseStatus::Review,
                 $entry['why'],
                 $hasCode
                     ? 'Before reusing this skill\'s code in TYPO3 (' . self::TYPO3_LICENSE . '), confirm the ' . $entry['label'] . ' terms are met — often only via the GPLv3 "or-later" path.'
@@ -117,7 +118,7 @@ final class LicenseChecker
             return new LicenseAssessment(
                 $raw,
                 $label,
-                LicenseAssessment::STATUS_INCOMPATIBLE,
+                LicenseStatus::Incompatible,
                 $label . ' is not freely compatible with ' . self::TYPO3_LICENSE . '.',
                 $hasCode
                     ? 'This skill\'s code is under ' . $label . ' and likely cannot be redistributed under ' . self::TYPO3_LICENSE . '. Do NOT copy its code into TYPO3 without clearing the license.'
@@ -129,7 +130,7 @@ final class LicenseChecker
         return new LicenseAssessment(
             $raw,
             $raw,
-            LicenseAssessment::STATUS_REVIEW,
+            LicenseStatus::Review,
             'Unrecognised license "' . $raw . '".',
             'Verify whether "' . $raw . '" is compatible with ' . self::TYPO3_LICENSE . ' before reusing this skill\'s content.',
         );
