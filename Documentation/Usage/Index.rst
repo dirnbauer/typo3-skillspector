@@ -15,9 +15,9 @@ The backend module
 with its last check level and the evidence behind it. :guilabel:`Check all
 skills` re-runs the scan.
 
-The module is administrators only; everyone else sees the *Denied* view. A
-check reads every skill body verbatim, including whatever an untrusted
-skill happens to carry.
+The module is administrators only — the backend router enforces that, and
+the controller checks a second time. A check reads every skill body
+verbatim, including whatever an untrusted skill happens to carry.
 
 Hiding a skill remains a separate, explicit action. nr_llm's own
 ``enabled`` toggle stays where it is, in :guilabel:`Admin Tools > LLM >

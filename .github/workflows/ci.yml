@@ -1,3 +1,14 @@
+# INERT INSIDE THE MONOREPO.
+#
+# This package lives in the webconsulting TYPO3 lab as a Composer path
+# repository and has no repository of its own, so GitHub Actions never reads
+# this file — workflows are only picked up at a repository root. It is kept
+# as the pipeline to restore verbatim if the package is ever extracted.
+#
+# What gates the package today: `Build/Scripts/runTests.sh -s quality` in the
+# lab (lint, PHPStan, unit) and the `composer ci` scripts in this directory
+# (which also run the functional suite).
+
 name: CI
 
 on:

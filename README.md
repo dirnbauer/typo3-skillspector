@@ -4,9 +4,9 @@
 [![PHP 8.4](https://img.shields.io/badge/PHP-8.4%2B-777bb3.svg)](https://www.php.net/supported-versions.php)
 [![License: GPL-2.0-or-later](https://img.shields.io/badge/license-GPL--2.0--or--later-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 
-## What it is
-
 Advisory security and license review for the skills `netresearch/nr-llm` manages. A skill is instructions an LLM will follow; this extension reads those instructions before the LLM does and tells a human what it found.
+
+## What it is
 
 Three checks run over the stored SKILL.md body, its frontmatter and its embedded code examples:
 
@@ -20,10 +20,13 @@ Everything is advisory. The report is written to `tx_nrllm_skill`; `enabled`, `o
 
 ## Requirements
 
-- TYPO3 14.3 LTS
-- PHP 8.4+
-- `netresearch/nr-llm` 0.34+ (the skills and their storage)
-- Optional: the NVIDIA SkillSpector binary
+| | |
+|---|---|
+| TYPO3 | 14.3 LTS |
+| PHP | 8.4+ |
+| `netresearch/nr-llm` | `^0.34 \|\| ^0.35` — owns the skills and their storage |
+| EXT:scheduler | Optional, to run the check on a schedule |
+| NVIDIA SkillSpector | Optional external binary |
 
 ## Install
 
@@ -49,7 +52,7 @@ Extension settings (*Admin Tools > Settings > Extension Configuration*):
 | `skillspectorEnabled` | `1` | Run the NVIDIA scanner when its binary exists |
 | `skillspectorBinary` | `skillspector` | Path to that binary |
 | `skillspectorUseLlm` | `0` | Semantic analysis — **sends skill content to nr_llm's default provider** |
-| `skillspectorTimeout` | `120` | Seconds before the subprocess is killed |
+| `skillspectorTimeout` | `120` | Seconds before the subprocess is killed (never below 10) |
 | `notificationRecipients` | *(empty)* | Comma-separated addresses for scheduled action messages |
 
 `skillspectorUseLlm` is the only setting that leaves the machine. It reuses the default nr_llm connection — provider, model and the vault-stored key — so no separate `SKILLSPECTOR_*` credentials are needed; the decrypted key lives only in the environment of one scan subprocess and is never persisted or logged.
@@ -78,6 +81,8 @@ composer ci:phpstan           # level 8, no baseline
 composer ci:cgl -- --dry-run
 docker run --rm -v $PWD:/project ghcr.io/typo3-documentation/render-guides:latest --config=Documentation
 ```
+
+Inside the webconsulting TYPO3 lab, which consumes this package as a Composer path repository, `Build/Scripts/runTests.sh -s quality` runs the lint, PHPStan and unit gates for it; the functional suite is run here.
 
 ## Docs
 

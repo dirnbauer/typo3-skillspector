@@ -16,8 +16,7 @@
         "symfony/process": "^7.0",
         "symfony/yaml": "^7.0",
         "typo3/cms-backend": "^14.3.7",
-        "typo3/cms-core": "^14.3.7",
-        "typo3/cms-scheduler": "^14.3.7"
+        "typo3/cms-core": "^14.3.7"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.1",
@@ -26,6 +25,9 @@
         "saschaegerer/phpstan-typo3": "^3.0.1",
         "typo3/coding-standards": "^0.9",
         "typo3/testing-framework": "^9.5"
+    },
+    "suggest": {
+        "typo3/cms-scheduler": "To run skillspector:check as a scheduled task"
     },
     "autoload": {
         "psr-4": {
@@ -59,11 +61,8 @@
     "extra": {
         "typo3/cms": {
             "extension-key": "skillspector",
-            "version": "1.0.0",
-            "web-dir": ".Build/public",
-            "Package": {
-                "providesPackages": []
-            }
+            "version": "1.1.0",
+            "web-dir": ".Build/public"
         }
     }
 }

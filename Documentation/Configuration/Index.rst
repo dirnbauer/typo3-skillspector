@@ -37,7 +37,10 @@ Extension settings
 
     *   -   ``skillspectorTimeout``
         -   ``120``
-        -   Seconds before the scan subprocess is killed.
+        -   Seconds before the scan subprocess is killed. Values below ten
+            are read as a typo and raised to ten; the LLM-assisted scan
+            additionally uses a floor of 600, because it makes several
+            model calls per skill.
 
     *   -   ``notificationRecipients``
         -   *(empty)*
@@ -91,6 +94,8 @@ scan silently falls back to static analysis.
 Who may run a check
 ===================
 
-The backend module is available to administrators. Non-administrators see
-the *Denied* view instead of the skill list — a check reads every skill
-body, including whatever secrets an untrusted skill may contain.
+The backend module is declared ``access: admin``, so the backend router
+turns non-administrators away before the controller runs; the controller
+checks again and renders a *Denied* view if it is ever reached another
+way. A check reads every skill body, including whatever secrets an
+untrusted skill may contain.
