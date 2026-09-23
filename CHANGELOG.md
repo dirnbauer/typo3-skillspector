@@ -31,8 +31,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `symfony/process` and `symfony/yaml` constrained to `^7.4` as TYPO3 itself
   requires; development dependencies raised to PHPUnit 13.3,
   testing-framework 9.7, PHPStan 2.2, phpstan-typo3 3.1.
-- The (inert) CI workflow runs PHP 8.5 as a required leg and the functional
+- The CI workflow runs PHP 8.5 as a required leg and the functional
   suite on PHP 8.4 and 8.5.
+- The package has its own repository,
+  [github.com/dirnbauer/typo3-skillspector](https://github.com/dirnbauer/typo3-skillspector)
+  (history carried over from the webconsulting TYPO3 lab, where it was a
+  Composer path repository), so the CI workflow runs for real;
+  `composer.json` gained `homepage`, `support` and `keywords`, and the
+  install instructions add the VCS repository.
 
 ### Fixed
 

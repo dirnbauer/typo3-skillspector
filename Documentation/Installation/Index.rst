@@ -24,9 +24,12 @@ Requirements
 Install with Composer
 =====================
 
+The package is distributed through its Git repository, not Packagist:
+
 ..  code-block:: bash
 
-    composer require webconsulting/skillspector
+    composer config repositories.skillspector vcs https://github.com/dirnbauer/typo3-skillspector.git
+    composer require webconsulting/skillspector:^1.2
     vendor/bin/typo3 extension:setup --extension=skillspector
 
 The extension adds three columns to :sql:`tx_nrllm_skill` —

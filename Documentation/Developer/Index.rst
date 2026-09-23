@@ -165,10 +165,8 @@ sets :xml:`<source ignoreIndirectDeprecations="true">`, so
 Continuous integration
 ======================
 
-This package is consumed by the webconsulting TYPO3 lab as a Composer path
-repository and has no repository of its own, so
-:file:`.github/workflows/ci.yml` does not run anywhere — GitHub Actions
-only reads workflows at a repository root. It is kept as the pipeline to
-restore if the package is ever extracted. What actually gates the package
-today is :bash:`Build/Scripts/runTests.sh -s quality` in the lab (lint,
-PHPStan, unit) plus the :bash:`composer ci` scripts here.
+:file:`.github/workflows/ci.yml` runs on every push to ``main``, on
+``v*`` tags and on pull requests: composer validate and audit, PHP lint,
+coding standards, PHPStan level 8, and the unit and functional suites on
+PHP 8.4 and 8.5 (functional against MariaDB). Locally, the
+:bash:`composer ci` scripts run the same gates.

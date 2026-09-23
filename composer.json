@@ -3,6 +3,19 @@
     "description": "Advisory security, NVIDIA SkillSpector and license checks for nr_llm skills.",
     "type": "typo3-cms-extension",
     "license": "GPL-2.0-or-later",
+    "keywords": [
+        "TYPO3",
+        "nr_llm",
+        "skills",
+        "security",
+        "license",
+        "SkillSpector"
+    ],
+    "homepage": "https://github.com/dirnbauer/typo3-skillspector",
+    "support": {
+        "issues": "https://github.com/dirnbauer/typo3-skillspector/issues",
+        "source": "https://github.com/dirnbauer/typo3-skillspector"
+    },
     "authors": [
         {
             "name": "Kurt Dirnbauer",

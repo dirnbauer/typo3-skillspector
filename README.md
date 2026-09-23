@@ -30,8 +30,11 @@ Everything is advisory. The report is written to `tx_nrllm_skill`; `enabled`, `o
 
 ## Install
 
+The package is distributed through this Git repository (not Packagist):
+
 ```bash
-composer require webconsulting/skillspector
+composer config repositories.skillspector vcs https://github.com/dirnbauer/typo3-skillspector.git
+composer require webconsulting/skillspector:^1.2
 vendor/bin/typo3 extension:setup --extension=skillspector
 ```
 
@@ -82,7 +85,7 @@ composer ci:cgl -- --dry-run
 docker run --rm -v $PWD:/project ghcr.io/typo3-documentation/render-guides:latest --config=Documentation
 ```
 
-Inside the webconsulting TYPO3 lab, which consumes this package as a Composer path repository, `Build/Scripts/runTests.sh -s quality` runs the lint, PHPStan and unit gates for it; the functional suite is run here.
+GitHub Actions (`.github/workflows/ci.yml`) runs the same gates on every push and pull request: composer validate and audit, PHP lint, coding standards, PHPStan level 8, and the unit and functional suites on PHP 8.4 and 8.5.
 
 ## Docs
 
