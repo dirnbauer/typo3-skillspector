@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff
   xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="EXT:skillspector/Resources/Private/Language/locallang_db.xlf" date="2026-09-23T00:00:00Z" product-name="skillspector">
+  <file source-language="en" target-language="de" datatype="plaintext" original="EXT:skillspector/Resources/Private/Language/locallang_db.xlf" date="2026-09-23T00:00:00Z" product-name="skillspector">
     <header/>
     <body>
       <trans-unit id="tab.review" resname="tab.review">
         <source>Skill inspection</source>
+        <target state="translated">Skill-Prüfung</target>
       </trans-unit>
       <trans-unit id="skill.check_level" resname="skill.check_level">
         <source>Review level</source>
+        <target state="translated">Prüfstufe</target>
       </trans-unit>
       <trans-unit id="skill.check_report" resname="skill.check_report">
         <source>Inspection report (JSON)</source>
+        <target state="translated">Prüfbericht (JSON)</target>
       </trans-unit>
       <trans-unit id="skill.checked_at" resname="skill.checked_at">
         <source>Last checked</source>
+        <target state="translated">Zuletzt geprüft</target>
       </trans-unit>
     </body>
   </file>

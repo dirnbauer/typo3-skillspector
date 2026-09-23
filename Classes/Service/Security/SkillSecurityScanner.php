@@ -22,14 +22,14 @@ use Webconsulting\Skillspector\Domain\Security\SkillCheckFinding;
  */
 final class SkillSecurityScanner
 {
-    private const EVIDENCE_MAX = 160;
-    private const MATCHES_PER_RULE = 3;
+    private const int EVIDENCE_MAX = 160;
+    private const int MATCHES_PER_RULE = 3;
     /**
      * Each rule applies to the imported instruction body, including code fences.
      *
      * @var list<array{id: string, severity: Severity, category: string, pattern: string, check: string}>
      */
-    private const RULES = [
+    private const array RULES = [
         // --- Dangerous code in examples ------------------------------------
         [
             // DANGER is reserved for context-INDEPENDENTLY catastrophic, irreversible

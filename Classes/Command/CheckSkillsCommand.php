@@ -23,11 +23,13 @@ final class CheckSkillsCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function configure(): void
     {
         $this->addOption('notify', null, InputOption::VALUE_NEGATABLE, 'Send configured advisory notifications', true);
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

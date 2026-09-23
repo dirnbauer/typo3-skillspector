@@ -5,6 +5,48 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-09-23
+
+### Added
+
+- The Skills Inspector module is a native TYPO3 v14 module: automatic reload
+  and bookmark buttons, a link to nr_llm's skill management, filters per
+  review level with counts, colour-coded level, license and SkillSpector
+  badges, findings with location, evidence and what to check, an empty state
+  and a confirmation modal before hiding a skill.
+- Post/redirect/get for "Check all skills" and hide/unhide, so a reload never
+  repeats a scan or a state change; the scan form announces its progress to
+  screen readers and ignores repeated clicks.
+- Every module label in XLIFF, English and German, including plural forms
+  (ICU); module labels use the v14 `skillspector.modules.inspector`
+  translation domain. German translations for the TCA labels.
+- Functional tests for the module: listing, level filter, scan, hide and the
+  administrator lock.
+
+### Changed
+
+- PHP 8.4 idioms: readonly service classes, typed class constants,
+  `#[\Override]` on the command, first-class callables and `new` without
+  parentheses; the controller registers through `#[AsController]`.
+- `symfony/process` and `symfony/yaml` constrained to `^7.4` as TYPO3 itself
+  requires; development dependencies raised to PHPUnit 13.3,
+  testing-framework 9.7, PHPStan 2.2, phpstan-typo3 3.1.
+- The (inert) CI workflow runs PHP 8.5 as a required leg and the functional
+  suite on PHP 8.4 and 8.5.
+
+### Fixed
+
+- `.gitignore` rules are anchored: the unanchored `public/` also matched
+  `Resources/Public/` on case-insensitive file systems, so new public assets
+  were silently ignored.
+- An undeclared license no longer shows "unknown" next to the "undeclared"
+  badge.
+
+### Removed
+
+- `Resources/Private/Language/locallang_mod.xlf` (replaced by
+  `Modules/inspector.xlf`).
+
 ## [1.1.0] - 2026-09-19
 
 Behaviour-preserving restructuring. The stored report JSON, the persisted

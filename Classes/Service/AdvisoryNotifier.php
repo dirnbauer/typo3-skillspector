@@ -15,12 +15,12 @@ use Webconsulting\Skillspector\Domain\ScanSummary;
  * Reports what a scheduled check found. Always to the log; additionally by
  * mail when recipients are configured. Nothing here changes a skill.
  */
-final class AdvisoryNotifier
+final readonly class AdvisoryNotifier
 {
     public function __construct(
-        private readonly ExtensionSettings $settings,
-        private readonly MailerInterface $mailer,
-        private readonly LoggerInterface $logger,
+        private ExtensionSettings $settings,
+        private MailerInterface $mailer,
+        private LoggerInterface $logger,
     ) {}
 
     public function notify(ScanSummary $summary): void
@@ -44,7 +44,7 @@ final class AdvisoryNotifier
         // No sender is set: TYPO3's mailer fills in the installation's
         // configured system address.
         $this->mailer->send(
-            (new MailMessage())
+            new MailMessage()
                 ->to(...array_map(static fn(string $email): Address => new Address($email), $recipients))
                 ->subject(sprintf('Skills Inspector: %d action item(s)', count($summary->messages)))
                 ->text(

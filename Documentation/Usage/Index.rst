@@ -13,7 +13,20 @@ The backend module
 
 :guilabel:`System > Skills Inspector` lists every skill nr_llm knows,
 with its last check level and the evidence behind it. :guilabel:`Check all
-skills` re-runs the scan.
+skills` re-runs the scan; while it runs the button is marked busy and the
+progress is announced to screen readers.
+
+*   Filter the list by review level (danger, warning, info, clean, not
+    checked); each filter shows how many skills it holds.
+*   Each row shows the skill's state in nr_llm (enabled, hidden, orphaned),
+    the review level with its findings (severity, category, location,
+    evidence and what to check), the license assessment and the SkillSpector
+    result.
+*   :guilabel:`Hide` asks for confirmation; :guilabel:`Unhide` restores the
+    skill. Every action redirects afterwards, so a reload never repeats a scan
+    or a state change.
+*   The module follows the backend's light and dark scheme and is translated
+    into English and German.
 
 The module is administrators only — the backend router enforces that, and
 the controller checks a second time. A check reads every skill body

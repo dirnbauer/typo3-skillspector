@@ -1,0 +1,194 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <f:asset.css identifier="skillspector-module" href="EXT:skillspector/Resources/Public/Css/module.css" />
+    <f:asset.module identifier="@typo3/backend/modal.js" />
+    <f:asset.module identifier="@webconsulting/skillspector/scan-form.js" />
+
+    <h1><f:translate key="module.title" domain="skillspector.messages" /></h1>
+
+    <f:be.infobox
+        title="{f:translate(key: 'advisory.title', domain: 'skillspector.messages')}"
+        state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}"
+    >
+        <p><f:translate key="advisory.message" domain="skillspector.messages" /></p>
+    </f:be.infobox>
+
+    <div class="skillspector-toolbar">
+        <form method="post" action="{moduleUri}" class="skillspector-scan-form" data-skillspector-scan-form="">
+            <button class="btn btn-primary" type="submit" name="action" value="scanAll"{f:if(condition: '!{skillCount}', then: ' disabled="disabled"')}>
+                <core:icon identifier="actions-refresh" size="small" />
+                <f:translate key="scan.submit" domain="skillspector.messages" />
+            </button>
+            <span class="skillspector-scan-form__status" role="status" aria-live="polite">
+                <span hidden="hidden" data-skillspector-scan-progress="">
+                    <core:icon identifier="spinner-circle" size="small" />
+                    <f:translate key="scan.progress" domain="skillspector.messages" />
+                </span>
+            </span>
+        </form>
+        <f:if condition="{skillCount}">
+            <nav class="btn-group" aria-label="{f:translate(key: 'filter.label', domain: 'skillspector.messages')}">
+                <f:for each="{filters}" as="option">
+                    <a href="{option.uri}" class="btn btn-sm btn-default{f:if(condition: option.active, then: ' active')}"{f:if(condition: option.active, then: ' aria-current="page"')}>
+                        {option.label} <span class="badge badge-default">{option.count}</span>
+                    </a>
+                </f:for>
+            </nav>
+        </f:if>
+    </div>
+
+    <f:if condition="{skills}">
+        <f:then>
+            <f:render section="Table" arguments="{_all}" />
+        </f:then>
+        <f:else>
+            <div class="skillspector-empty">
+                <core:icon identifier="skillspector-module" size="large" />
+                <f:if condition="{skillCount}">
+                    <f:then>
+                        <p><f:translate key="empty.filter" domain="skillspector.messages" /></p>
+                        <a href="{resetUri}" class="btn btn-default"><f:translate key="filter.reset" domain="skillspector.messages" /></a>
+                    </f:then>
+                    <f:else>
+                        <p><f:translate key="empty.skills" domain="skillspector.messages" /></p>
+                        <f:if condition="{nrLlmSkillsUri}">
+                            <a href="{nrLlmSkillsUri}" class="btn btn-primary"><f:translate key="nrllm.link" domain="skillspector.messages" /></a>
+                        </f:if>
+                    </f:else>
+                </f:if>
+            </div>
+        </f:else>
+    </f:if>
+</f:section>
+
+<f:section name="Table">
+    <div class="table-fit">
+        <table class="table table-striped table-hover skillspector-table">
+            <caption class="visually-hidden"><f:translate key="table.caption" domain="skillspector.messages" /></caption>
+            <thead>
+                <tr>
+                    <th scope="col"><f:translate key="col.skill" domain="skillspector.messages" /></th>
+                    <th scope="col"><f:translate key="col.state" domain="skillspector.messages" /></th>
+                    <th scope="col"><f:translate key="col.review" domain="skillspector.messages" /></th>
+                    <th scope="col"><f:translate key="col.license" domain="skillspector.messages" /></th>
+                    <th scope="col"><f:translate key="col.skillspector" domain="skillspector.messages" /></th>
+                    <th scope="col"><f:translate key="col.checked" domain="skillspector.messages" /></th>
+                    <th scope="col" class="col-control"><span class="visually-hidden"><f:translate key="col.actions" domain="skillspector.messages" /></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <f:for each="{skills}" as="skill">
+                    <tr>
+                        <td>
+                            <strong>{skill.name}</strong>
+                            <f:if condition="{skill.identifier}"><br /><code class="skillspector-identifier">{skill.identifier}</code></f:if>
+                        </td>
+                        <td>
+                            <span class="skillspector-badges">
+                                <f:if condition="{skill.enabled}">
+                                    <f:then><span class="badge badge-success"><f:translate key="state.enabled" domain="skillspector.messages" /></span></f:then>
+                                    <f:else><span class="badge badge-default"><f:translate key="state.disabled" domain="skillspector.messages" /></span></f:else>
+                                </f:if>
+                                <f:if condition="{skill.hidden}"><span class="badge badge-danger"><f:translate key="state.hidden" domain="skillspector.messages" /></span></f:if>
+                                <f:if condition="{skill.orphaned}"><span class="badge badge-warning"><f:translate key="state.orphaned" domain="skillspector.messages" /></span></f:if>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge badge-{skill.levelBadge}">{skill.levelLabel}</span>
+                            <f:if condition="{skill.findings}">
+                                <details class="skillspector-findings">
+                                    <summary><f:translate key="findings.summary" domain="skillspector.messages" arguments="{count: '{skill.findings -> f:count()}'}" /></summary>
+                                    <ul>
+                                        <f:for each="{skill.findings}" as="finding">
+                                            <li>
+                                                <span class="badge badge-{finding.severityBadge}">{finding.severityLabel}</span>
+                                                <strong>{finding.category}</strong>
+                                                <f:if condition="{finding.location}"> <code>{finding.location}</code></f:if>
+                                                <f:if condition="{finding.evidence}"><br /><code class="skillspector-evidence">{finding.evidence}</code></f:if>
+                                                <f:if condition="{finding.whatToCheck}"><br /><span class="text-variant">{finding.whatToCheck}</span></f:if>
+                                            </li>
+                                        </f:for>
+                                    </ul>
+                                </details>
+                            </f:if>
+                        </td>
+                        <td>
+                            <f:if condition="{skill.license}">
+                                <f:then>
+                                    <span class="badge badge-{skill.license.statusBadge}">{skill.license.statusLabel}</span>
+                                    <f:if condition="{skill.license.normalized}"> {skill.license.normalized}</f:if>
+                                    <f:if condition="{skill.license.whatToCheck}">
+                                        <br /><span class="text-variant">{skill.license.whatToCheck}</span>
+                                    </f:if>
+                                </f:then>
+                                <f:else><span class="text-variant">–</span></f:else>
+                            </f:if>
+                        </td>
+                        <td>
+                            <f:if condition="{skill.skillspector}">
+                                <f:then>
+                                    <span class="badge badge-{skill.skillspector.statusBadge}">{skill.skillspector.statusLabel}</span>
+                                    <f:if condition="{skill.skillspector.score} > -1"> {skill.skillspector.score}/100</f:if>
+                                    <f:if condition="{skill.skillspector.recommendation}"><br /><span class="text-variant">{skill.skillspector.recommendation}</span></f:if>
+                                    <f:if condition="{skill.skillspector.note}"><br /><span class="text-variant">{skill.skillspector.note}</span></f:if>
+                                </f:then>
+                                <f:else><span class="text-variant"><f:translate key="skillspector.off" domain="skillspector.messages" /></span></f:else>
+                            </f:if>
+                        </td>
+                        <td class="text-nowrap">
+                            <f:if condition="{skill.checkedAt}">
+                                <f:then><time datetime="{skill.checkedAt -> f:format.date(format: 'c')}">{skill.checkedAt -> f:format.date(format: '{dateFormat} {timeFormat}')}</time></f:then>
+                                <f:else><span class="text-variant"><f:translate key="checked.never" domain="skillspector.messages" /></span></f:else>
+                            </f:if>
+                        </td>
+                        <td class="col-control">
+                            <div class="btn-group" role="group">
+                                <a href="{skill.editUri}" class="btn btn-default btn-sm" title="{f:translate(key: 'action.edit', domain: 'skillspector.messages')}">
+                                    <core:icon identifier="actions-open" size="small" />
+                                    <span class="visually-hidden"><f:translate key="action.edit" domain="skillspector.messages" />: {skill.name}</span>
+                                </a>
+                                <form method="post" action="{moduleUri}" class="d-inline">
+                                    <input type="hidden" name="action" value="toggleHidden" />
+                                    <input type="hidden" name="skill" value="{skill.uid}" />
+                                    <f:if condition="{skill.hidden}">
+                                        <f:then>
+                                            <input type="hidden" name="hidden" value="0" />
+                                            <button class="btn btn-default btn-sm" type="submit">
+                                                <core:icon identifier="actions-edit-unhide" size="small" />
+                                                <f:translate key="action.unhide" domain="skillspector.messages" />
+                                                <span class="visually-hidden">{skill.name}</span>
+                                            </button>
+                                        </f:then>
+                                        <f:else>
+                                            <input type="hidden" name="hidden" value="1" />
+                                            <button
+                                                class="btn btn-default btn-sm t3js-modal-trigger"
+                                                type="submit"
+                                                data-title="{f:translate(key: 'action.hide.confirm.title', domain: 'skillspector.messages', arguments: {0: skill.name})}"
+                                                data-content="{f:translate(key: 'action.hide.confirm.message', domain: 'skillspector.messages')}"
+                                                data-severity="warning"
+                                                data-button-close-text="{f:translate(key: 'action.cancel', domain: 'skillspector.messages')}"
+                                                data-button-ok-text="{f:translate(key: 'action.hide', domain: 'skillspector.messages')}"
+                                            >
+                                                <core:icon identifier="actions-edit-hide" size="small" />
+                                                <f:translate key="action.hide" domain="skillspector.messages" />
+                                                <span class="visually-hidden">{skill.name}</span>
+                                            </button>
+                                        </f:else>
+                                    </f:if>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </f:for>
+            </tbody>
+        </table>
+    </div>
+</f:section>
+</html>

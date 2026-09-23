@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 use Webconsulting\Skillspector\Controller\Backend\SkillspectorController;
 
+/**
+ * System → Skills Inspector: advisory security and license review of the
+ * skills nr_llm manages. Administrators only.
+ */
 return [
     'skillspector' => [
         'parent' => 'system',
@@ -11,7 +15,7 @@ return [
         'access' => 'admin',
         'path' => '/module/system/skillspector',
         'iconIdentifier' => 'skillspector-module',
-        'labels' => 'LLL:EXT:skillspector/Resources/Private/Language/locallang_mod.xlf',
+        'labels' => 'skillspector.modules.inspector',
         'routes' => [
             '_default' => ['target' => SkillspectorController::class . '::handleRequest'],
         ],

@@ -28,7 +28,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.PHP_VERSION }}
@@ -46,7 +46,7 @@ jobs:
     name: Coding standards
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.PHP_VERSION }}
@@ -58,7 +58,7 @@ jobs:
     name: PHPStan
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.PHP_VERSION }}
@@ -70,13 +70,12 @@ jobs:
   unit:
     name: Unit tests (PHP ${{ matrix.php-version }})
     runs-on: ubuntu-24.04
-    continue-on-error: ${{ matrix.php-version == '8.5' }}
     strategy:
       fail-fast: false
       matrix:
         php-version: ['8.4', '8.5']
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
@@ -85,8 +84,12 @@ jobs:
       - run: composer ci:tests:unit
 
   functional:
-    name: Functional tests (MariaDB)
+    name: Functional tests (PHP ${{ matrix.php-version }}, MariaDB)
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.4', '8.5']
     services:
       mariadb:
         image: mariadb:10.11
@@ -108,10 +111,10 @@ jobs:
       typo3DatabaseUsername: root
       typo3DatabasePassword: root
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ env.PHP_VERSION }}
+          php-version: ${{ matrix.php-version }}
           coverage: none
       - run: composer install --no-progress --no-interaction
       - run: composer ci:tests:functional

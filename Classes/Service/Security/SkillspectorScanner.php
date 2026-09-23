@@ -27,22 +27,22 @@ use Webconsulting\Skillspector\Domain\Security\SkillspectorReport;
  *
  * Install: `uv tool install git+https://github.com/NVIDIA/skillspector.git`
  */
-final class SkillspectorScanner
+final readonly class SkillspectorScanner
 {
-    public const INSTALL_HINT = 'uv tool install git+https://github.com/NVIDIA/skillspector.git';
+    public const string INSTALL_HINT = 'uv tool install git+https://github.com/NVIDIA/skillspector.git';
 
-    private const OUTPUT_SNIPPET_MAX = 300;
+    private const int OUTPUT_SNIPPET_MAX = 300;
 
     /**
      * LLM-assisted scans make several model calls per skill, so the static
      * default timeout is far too low — this is the floor applied when the LLM
      * pass actually runs.
      */
-    private const LLM_TIMEOUT_FLOOR = 600;
+    private const int LLM_TIMEOUT_FLOOR = 600;
 
     public function __construct(
-        private readonly ExtensionSettings $settings,
-        private readonly NrLlmScanCredentials $nrLlmScanCredentials,
+        private ExtensionSettings $settings,
+        private NrLlmScanCredentials $nrLlmScanCredentials,
     ) {}
 
     /**
@@ -114,7 +114,7 @@ final class SkillspectorScanner
             return is_executable($configured) ? $configured : null;
         }
 
-        return (new ExecutableFinder())->find($configured);
+        return new ExecutableFinder()->find($configured);
     }
 
     /**

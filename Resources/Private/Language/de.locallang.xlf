@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff
+  xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="de" datatype="plaintext" original="EXT:skillspector/Resources/Private/Language/locallang.xlf" date="2026-09-23T00:00:00Z" product-name="skillspector">
+    <header/>
+    <body>
+      <trans-unit id="module.title" resname="module.title">
+        <source>Skills Inspector</source>
+        <target state="translated">Skills Inspector</target>
+      </trans-unit>
+      <trans-unit id="advisory.title" resname="advisory.title">
+        <source>Advisory checks only</source>
+        <target state="translated">Nur beratende Prüfungen</target>
+      </trans-unit>
+      <trans-unit id="advisory.message" resname="advisory.message">
+        <source>A check reads every skill body and stores a report: security patterns, license compatibility with GPL-2.0-or-later and, when installed, NVIDIA SkillSpector. It never hides, enables or disables a skill. Hide a skill explicitly below; sync sources and toggle “enabled” in nr_llm.</source>
+        <target state="translated">Eine Prüfung liest jeden Skill und speichert einen Bericht: Sicherheitsmuster, Lizenzverträglichkeit mit GPL-2.0-or-later und, falls installiert, NVIDIA SkillSpector. Sie blendet keinen Skill aus und aktiviert oder deaktiviert keinen. Skills blenden Sie unten ausdrücklich aus; Quellen synchronisieren und „aktiviert“ umschalten Sie in nr_llm.</target>
+      </trans-unit>
+      <trans-unit id="nrllm.link" resname="nrllm.link">
+        <source>Manage skills in nr_llm</source>
+        <target state="translated">Skills in nr_llm verwalten</target>
+      </trans-unit>
+      <trans-unit id="scan.submit" resname="scan.submit">
+        <source>Check all skills</source>
+        <target state="translated">Alle Skills prüfen</target>
+      </trans-unit>
+      <trans-unit id="scan.progress" resname="scan.progress">
+        <source>Checking … this can take a while when SkillSpector runs.</source>
+        <target state="translated">Prüfung läuft … mit SkillSpector kann das eine Weile dauern.</target>
+      </trans-unit>
+      <trans-unit id="filter.label" resname="filter.label">
+        <source>Filter by review level</source>
+        <target state="translated">Nach Prüfstufe filtern</target>
+      </trans-unit>
+      <trans-unit id="filter.all" resname="filter.all">
+        <source>All</source>
+        <target state="translated">Alle</target>
+      </trans-unit>
+      <trans-unit id="filter.reset" resname="filter.reset">
+        <source>Show all skills</source>
+        <target state="translated">Alle Skills anzeigen</target>
+      </trans-unit>
+      <trans-unit id="level.danger" resname="level.danger">
+        <source>Danger</source>
+        <target state="translated">Gefahr</target>
+      </trans-unit>
+      <trans-unit id="level.warning" resname="level.warning">
+        <source>Warning</source>
+        <target state="translated">Warnung</target>
+      </trans-unit>
+      <trans-unit id="level.info" resname="level.info">
+        <source>Info</source>
+        <target state="translated">Hinweis</target>
+      </trans-unit>
+      <trans-unit id="level.none" resname="level.none">
+        <source>Clean</source>
+        <target state="translated">Unauffällig</target>
+      </trans-unit>
+      <trans-unit id="level.unchecked" resname="level.unchecked">
+        <source>Not checked</source>
+        <target state="translated">Nicht geprüft</target>
+      </trans-unit>
+      <trans-unit id="empty.skills" resname="empty.skills">
+        <source>nr_llm has no skills yet. Add and synchronize a skill source, then check the skills here.</source>
+        <target state="translated">nr_llm kennt noch keine Skills. Legen Sie eine Skill-Quelle an, synchronisieren Sie sie und prüfen Sie die Skills dann hier.</target>
+      </trans-unit>
+      <trans-unit id="empty.filter" resname="empty.filter">
+        <source>No skill has this review level.</source>
+        <target state="translated">Kein Skill hat diese Prüfstufe.</target>
+      </trans-unit>
+      <trans-unit id="table.caption" resname="table.caption">
+        <source>nr_llm skills with their review level, license and SkillSpector result</source>
+        <target state="translated">nr_llm-Skills mit Prüfstufe, Lizenz und SkillSpector-Ergebnis</target>
+      </trans-unit>
+      <trans-unit id="col.skill" resname="col.skill">
+        <source>Skill</source>
+        <target state="translated">Skill</target>
+      </trans-unit>
+      <trans-unit id="col.state" resname="col.state">
+        <source>State</source>
+        <target state="translated">Status</target>
+      </trans-unit>
+      <trans-unit id="col.review" resname="col.review">
+        <source>Review</source>
+        <target state="translated">Prüfung</target>
+      </trans-unit>
+      <trans-unit id="col.license" resname="col.license">
+        <source>License</source>
+        <target state="translated">Lizenz</target>
+      </trans-unit>
+      <trans-unit id="col.skillspector" resname="col.skillspector">
+        <source>SkillSpector</source>
+        <target state="translated">SkillSpector</target>
+      </trans-unit>
+      <trans-unit id="col.checked" resname="col.checked">
+        <source>Checked</source>
+        <target state="translated">Geprüft</target>
+      </trans-unit>
+      <trans-unit id="col.actions" resname="col.actions">
+        <source>Actions</source>
+        <target state="translated">Aktionen</target>
+      </trans-unit>
+      <trans-unit id="state.enabled" resname="state.enabled">
+        <source>enabled</source>
+        <target state="translated">aktiviert</target>
+      </trans-unit>
+      <trans-unit id="state.disabled" resname="state.disabled">
+        <source>disabled</source>
+        <target state="translated">deaktiviert</target>
+      </trans-unit>
+      <trans-unit id="state.hidden" resname="state.hidden">
+        <source>hidden</source>
+        <target state="translated">ausgeblendet</target>
+      </trans-unit>
+      <trans-unit id="state.orphaned" resname="state.orphaned">
+        <source>orphaned</source>
+        <target state="translated">verwaist</target>
+      </trans-unit>
+      <trans-unit id="findings.summary" resname="findings.summary">
+        <source>{count, plural, one {# finding} other {# findings}}</source>
+        <target state="translated">{count, plural, one {# Befund} other {# Befunde}}</target>
+      </trans-unit>
+      <trans-unit id="license.compatible" resname="license.compatible">
+        <source>compatible</source>
+        <target state="translated">verträglich</target>
+      </trans-unit>
+      <trans-unit id="license.review" resname="license.review">
+        <source>review</source>
+        <target state="translated">prüfen</target>
+      </trans-unit>
+      <trans-unit id="license.incompatible" resname="license.incompatible">
+        <source>incompatible</source>
+        <target state="translated">unverträglich</target>
+      </trans-unit>
+      <trans-unit id="license.unknown" resname="license.unknown">
+        <source>undeclared</source>
+        <target state="translated">nicht angegeben</target>
+      </trans-unit>
+      <trans-unit id="skillspector.ok" resname="skillspector.ok">
+        <source>scanned</source>
+        <target state="translated">geprüft</target>
+      </trans-unit>
+      <trans-unit id="skillspector.unavailable" resname="skillspector.unavailable">
+        <source>not installed</source>
+        <target state="translated">nicht installiert</target>
+      </trans-unit>
+      <trans-unit id="skillspector.error" resname="skillspector.error">
+        <source>failed</source>
+        <target state="translated">fehlgeschlagen</target>
+      </trans-unit>
+      <trans-unit id="skillspector.off" resname="skillspector.off">
+        <source>not run</source>
+        <target state="translated">nicht ausgeführt</target>
+      </trans-unit>
+      <trans-unit id="checked.never" resname="checked.never">
+        <source>never</source>
+        <target state="translated">nie</target>
+      </trans-unit>
+      <trans-unit id="action.edit" resname="action.edit">
+        <source>Open the skill record</source>
+        <target state="translated">Skill-Datensatz öffnen</target>
+      </trans-unit>
+      <trans-unit id="action.hide" resname="action.hide">
+        <source>Hide</source>
+        <target state="translated">Ausblenden</target>
+      </trans-unit>
+      <trans-unit id="action.unhide" resname="action.unhide">
+        <source>Unhide</source>
+        <target state="translated">Einblenden</target>
+      </trans-unit>
+      <trans-unit id="action.cancel" resname="action.cancel">
+        <source>Cancel</source>
+        <target state="translated">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="action.hide.confirm.title" resname="action.hide.confirm.title">
+        <source>Hide “%s”?</source>
+        <target state="translated">„%s“ ausblenden?</target>
+      </trans-unit>
+      <trans-unit id="action.hide.confirm.message" resname="action.hide.confirm.message">
+        <source>nr_llm and Skillflow will no longer use this skill until it is unhidden. Its enabled state in nr_llm stays as it is.</source>
+        <target state="translated">nr_llm und Skillflow verwenden diesen Skill nicht mehr, bis er wieder eingeblendet wird. Sein Aktivierungsstatus in nr_llm bleibt unverändert.</target>
+      </trans-unit>
+      <trans-unit id="denied.title" resname="denied.title">
+        <source>Administrator access required</source>
+        <target state="translated">Administratorrechte erforderlich</target>
+      </trans-unit>
+      <trans-unit id="denied.message" resname="denied.message">
+        <source>The Skills Inspector shows every skill body verbatim and is available to administrators only.</source>
+        <target state="translated">Der Skills Inspector zeigt jeden Skill im Wortlaut und steht nur Administratorinnen und Administratoren zur Verfügung.</target>
+      </trans-unit>
+      <trans-unit id="flash.scan.title" resname="flash.scan.title">
+        <source>Inspection finished</source>
+        <target state="translated">Prüfung abgeschlossen</target>
+      </trans-unit>
+      <trans-unit id="flash.scan.message" resname="flash.scan.message">
+        <source>Checked {checked, plural, one {# skill} other {# skills}}: {danger} danger, {warning} warning, {info} info. Nothing was hidden automatically.</source>
+        <target state="translated">{checked, plural, one {# Skill} other {# Skills}} geprüft: {danger} Gefahr, {warning} Warnung, {info} Hinweis. Nichts wurde automatisch ausgeblendet.</target>
+      </trans-unit>
+      <trans-unit id="flash.toggle.failed" resname="flash.toggle.failed">
+        <source>State change failed</source>
+        <target state="translated">Statusänderung fehlgeschlagen</target>
+      </trans-unit>
+      <trans-unit id="flash.hidden.title" resname="flash.hidden.title">
+        <source>Skill hidden</source>
+        <target state="translated">Skill ausgeblendet</target>
+      </trans-unit>
+      <trans-unit id="flash.hidden.message" resname="flash.hidden.message">
+        <source>nr_llm and Skillflow will not use the skill.</source>
+        <target state="translated">nr_llm und Skillflow verwenden den Skill nicht mehr.</target>
+      </trans-unit>
+      <trans-unit id="flash.unhidden.title" resname="flash.unhidden.title">
+        <source>Skill unhidden</source>
+        <target state="translated">Skill eingeblendet</target>
+      </trans-unit>
+      <trans-unit id="flash.unhidden.message" resname="flash.unhidden.message">
+        <source>The skill is visible again; its enabled state in nr_llm still applies.</source>
+        <target state="translated">Der Skill ist wieder sichtbar; sein Aktivierungsstatus in nr_llm gilt weiterhin.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

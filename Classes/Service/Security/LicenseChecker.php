@@ -19,14 +19,14 @@ use Webconsulting\Skillspector\Domain\Security\LicenseStatus;
  */
 final class LicenseChecker
 {
-    private const TYPO3_LICENSE = 'GPL-2.0-or-later';
+    private const string TYPO3_LICENSE = 'GPL-2.0-or-later';
 
     /**
      * Permissive or GPL-2-compatible: safe to reuse under GPL-2.0-or-later.
      *
      * @var array<string, string> normalized-key => display label
      */
-    private const COMPATIBLE = [
+    private const array COMPATIBLE = [
         'mit' => 'MIT', 'x11' => 'X11', 'isc' => 'ISC',
         'bsd-2-clause' => 'BSD-2-Clause', 'bsd-3-clause' => 'BSD-3-Clause', 'bsd' => 'BSD',
         '0bsd' => '0BSD', 'zlib' => 'Zlib', 'libpng' => 'libpng',
@@ -45,7 +45,7 @@ final class LicenseChecker
      *
      * @var array<string, array{label: string, why: string}>
      */
-    private const REVIEW = [
+    private const array REVIEW = [
         'apache-2.0' => ['label' => 'Apache-2.0', 'why' => 'Apache-2.0 is incompatible with GPL-2.0-only; it is only compatible via the "or-later" upgrade to GPLv3.'],
         'apache-2' => ['label' => 'Apache-2.0', 'why' => 'Apache-2.0 is incompatible with GPL-2.0-only; it is only compatible via the "or-later" upgrade to GPLv3.'],
         'mpl-2.0' => ['label' => 'MPL-2.0', 'why' => 'MPL-2.0 is compatible per-file, but mixing into a GPL work has conditions.'],
@@ -63,7 +63,7 @@ final class LicenseChecker
      *
      * @var array<string, string>
      */
-    private const INCOMPATIBLE = [
+    private const array INCOMPATIBLE = [
         'cc-by-nc' => 'CC-BY-NC (non-commercial)', 'cc-by-nc-4.0' => 'CC-BY-NC-4.0 (non-commercial)',
         'cc-by-nd' => 'CC-BY-ND (no derivatives)', 'cc-by-nc-nd-4.0' => 'CC-BY-NC-ND-4.0 (non-free)',
         'cc-by-nc-sa-4.0' => 'CC-BY-NC-SA-4.0 (non-commercial)',

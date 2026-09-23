@@ -12,12 +12,12 @@ use Webconsulting\Skillspector\Support\Typed;
  * Combines advisory security, code-license and optional NVIDIA SkillSpector
  * checks. The inspector persists the report without changing skill state.
  */
-final class SkillCheckService
+final readonly class SkillCheckService
 {
     public function __construct(
-        private readonly SkillSecurityScanner $securityScanner,
-        private readonly LicenseChecker $licenseChecker,
-        private readonly SkillspectorScanner $skillspectorScanner,
+        private SkillSecurityScanner $securityScanner,
+        private LicenseChecker $licenseChecker,
+        private SkillspectorScanner $skillspectorScanner,
     ) {}
 
     public function check(ParsedSkill $skill): SkillCheckReport

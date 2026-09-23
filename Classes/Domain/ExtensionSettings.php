@@ -18,11 +18,11 @@ use Webconsulting\Skillspector\Support\Typed;
  */
 final readonly class ExtensionSettings
 {
-    private const DEFAULT_BINARY = 'skillspector';
-    private const DEFAULT_TIMEOUT = 120;
+    private const string DEFAULT_BINARY = 'skillspector';
+    private const int DEFAULT_TIMEOUT = 120;
 
     /** A scan that may not take ten seconds cannot succeed; treat lower values as a typo. */
-    private const MINIMUM_TIMEOUT = 10;
+    private const int MINIMUM_TIMEOUT = 10;
 
     /**
      * @param list<string> $notificationRecipients

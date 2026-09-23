@@ -88,7 +88,7 @@ final class SkillScanTest extends FunctionalTestCase
                 'body' => $skill->body,
                 'raw_frontmatter' => json_encode($skill->metadata, JSON_THROW_ON_ERROR),
                 'allowed_tools' => json_encode(
-                    array_map('trim', explode(',', $skill->allowedTools)),
+                    array_map(trim(...), explode(',', $skill->allowedTools)),
                     JSON_THROW_ON_ERROR,
                 ),
                 'enabled' => 1,

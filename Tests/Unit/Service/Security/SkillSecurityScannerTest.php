@@ -22,7 +22,7 @@ final class SkillSecurityScannerTest extends TestCase
      */
     private function scanCode(string $code): array
     {
-        $findings = (new SkillSecurityScanner())->scan("```sh\n" . $code . "\n```");
+        $findings = new SkillSecurityScanner()->scan("```sh\n" . $code . "\n```");
         $bySeverity = [];
         foreach ($findings as $finding) {
             $bySeverity[$finding->id] = $finding->severity;

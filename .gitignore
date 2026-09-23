@@ -1,17 +1,25 @@
+# IDE and OS
 .DS_Store
 ._*
 .idea/
 .vscode/
-.claude
+*.swp
+
+# Composer
+/vendor/
+/composer.lock
+
+# Build artifacts, tool caches and test instances. Anchored: an unanchored
+# "public/" also matched Resources/Public/ on case-insensitive file systems.
+/.Build/
+/var/
+/public/
+/node_modules/
+/Build/Reports/
+/Documentation-GENERATED-temp/
 *.cache
-.php-cs-fixer.cache
 .phpunit.cache/
 *.map
-var/
-vendor/
-node_modules/
-.Build/
-public/
-composer.lock
-Build/Reports/
-Documentation-GENERATED-temp
+
+# Local agent configuration
+.claude/

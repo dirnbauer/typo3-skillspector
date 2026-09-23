@@ -20,17 +20,17 @@ use Webconsulting\Skillspector\Support\Typed;
  */
 final readonly class SkillspectorReport
 {
-    public const RECOMMENDATION_DO_NOT_INSTALL = 'DO_NOT_INSTALL';
-    public const RECOMMENDATION_CAUTION = 'CAUTION';
+    public const string RECOMMENDATION_DO_NOT_INSTALL = 'DO_NOT_INSTALL';
+    public const string RECOMMENDATION_CAUTION = 'CAUTION';
 
-    private const MAX_ISSUES = 40;
-    private const TEXT_MAX = 200;
+    private const int MAX_ISSUES = 40;
+    private const int TEXT_MAX = 200;
 
     /**
      * SkillSpector issue severity => review severity. Only CRITICAL maps to
      * DANGER; aggregate recommendations cap at WARNING.
      */
-    private const SEVERITY_MAP = [
+    private const array SEVERITY_MAP = [
         'CRITICAL' => Severity::Danger,
         'HIGH' => Severity::Warning,
         'MEDIUM' => Severity::Warning,
@@ -43,10 +43,10 @@ final readonly class SkillspectorReport
      * `finding` is SkillSpector 2.x; `title` is the shape documented in the
      * project README.
      */
-    private const EVIDENCE_FIELDS = ['finding', 'title', 'explanation', 'description'];
+    private const array EVIDENCE_FIELDS = ['finding', 'title', 'explanation', 'description'];
 
     /** Issue fields carrying the "what to do about it" text, most specific first. */
-    private const REMEDIATION_FIELDS = ['remediation', 'explanation', 'recommendation', 'description'];
+    private const array REMEDIATION_FIELDS = ['remediation', 'explanation', 'recommendation', 'description'];
 
     /**
      * @param list<SkillCheckFinding> $findings

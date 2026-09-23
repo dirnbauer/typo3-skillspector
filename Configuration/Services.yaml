@@ -4,6 +4,8 @@ services:
     autoconfigure: true
     public: false
 
+  # Commands register through #[AsCommand], the module controller through
+  # #[AsController].
   Webconsulting\Skillspector\:
     resource: '../Classes/*'
     exclude:
@@ -16,6 +18,3 @@ services:
     factory: ['Webconsulting\Skillspector\Domain\ExtensionSettings', 'load']
     arguments:
       - '@TYPO3\CMS\Core\Configuration\ExtensionConfiguration'
-
-  Webconsulting\Skillspector\Controller\Backend\SkillspectorController:
-    public: true

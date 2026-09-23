@@ -16,13 +16,13 @@ use Webconsulting\Skillspector\Service\Security\SkillCheckService;
 use Webconsulting\Skillspector\Support\Typed;
 
 /** Runs advisory checks against nr_llm-owned skills and persists only reports. */
-final class SkillInspectionService
+final readonly class SkillInspectionService
 {
-    private const TABLE = 'tx_nrllm_skill';
+    private const string TABLE = 'tx_nrllm_skill';
 
     public function __construct(
-        private readonly ConnectionPool $connectionPool,
-        private readonly SkillCheckService $skillCheckService,
+        private ConnectionPool $connectionPool,
+        private SkillCheckService $skillCheckService,
     ) {}
 
     public function scanAll(): ScanSummary
@@ -75,7 +75,7 @@ final class SkillInspectionService
             Typed::string($row['name'] ?? ''),
             Typed::string($row['description'] ?? ''),
             Typed::string($row['body'] ?? ''),
-            is_array($allowed) ? implode(',', array_values(array_filter($allowed, 'is_string'))) : '',
+            is_array($allowed) ? implode(',', array_values(array_filter($allowed, is_string(...)))) : '',
             $metadata,
         );
     }

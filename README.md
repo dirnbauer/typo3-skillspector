@@ -59,7 +59,7 @@ Extension settings (*Admin Tools > Settings > Extension Configuration*):
 
 ## Use
 
-Open **System > Skills Inspector**, run **Check all skills**, and read the evidence per skill.
+Open **System > Skills Inspector**, run **Check all skills**, filter by review level and read the evidence per skill: findings with severity, location and what to check, the license assessment and the SkillSpector result. **Hide** asks for confirmation; the module is translated into English and German and follows the backend's light and dark mode.
 
 The same scan runs headless as a schedulable Symfony command:
 

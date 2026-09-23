@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff
+  xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:skillspector/Resources/Private/Language/Modules/inspector.xlf" date="2026-09-23T00:00:00Z" product-name="skillspector">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title">
+        <source>Skills Inspector</source>
+      </trans-unit>
+      <trans-unit id="description" resname="description">
+        <source>Review the skills nr_llm manages for security risks and license compatibility. Checks are advisory and never change a skill.</source>
+      </trans-unit>
+      <trans-unit id="short_description" resname="short_description">
+        <source>Security and license review of skills</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

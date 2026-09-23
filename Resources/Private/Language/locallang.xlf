@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff
+  xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:skillspector/Resources/Private/Language/locallang.xlf" date="2026-09-23T00:00:00Z" product-name="skillspector">
+    <header/>
+    <body>
+      <trans-unit id="module.title" resname="module.title">
+        <source>Skills Inspector</source>
+      </trans-unit>
+      <trans-unit id="advisory.title" resname="advisory.title">
+        <source>Advisory checks only</source>
+      </trans-unit>
+      <trans-unit id="advisory.message" resname="advisory.message">
+        <source>A check reads every skill body and stores a report: security patterns, license compatibility with GPL-2.0-or-later and, when installed, NVIDIA SkillSpector. It never hides, enables or disables a skill. Hide a skill explicitly below; sync sources and toggle “enabled” in nr_llm.</source>
+      </trans-unit>
+      <trans-unit id="nrllm.link" resname="nrllm.link">
+        <source>Manage skills in nr_llm</source>
+      </trans-unit>
+      <trans-unit id="scan.submit" resname="scan.submit">
+        <source>Check all skills</source>
+      </trans-unit>
+      <trans-unit id="scan.progress" resname="scan.progress">
+        <source>Checking … this can take a while when SkillSpector runs.</source>
+      </trans-unit>
+      <trans-unit id="filter.label" resname="filter.label">
+        <source>Filter by review level</source>
+      </trans-unit>
+      <trans-unit id="filter.all" resname="filter.all">
+        <source>All</source>
+      </trans-unit>
+      <trans-unit id="filter.reset" resname="filter.reset">
+        <source>Show all skills</source>
+      </trans-unit>
+      <trans-unit id="level.danger" resname="level.danger">
+        <source>Danger</source>
+      </trans-unit>
+      <trans-unit id="level.warning" resname="level.warning">
+        <source>Warning</source>
+      </trans-unit>
+      <trans-unit id="level.info" resname="level.info">
+        <source>Info</source>
+      </trans-unit>
+      <trans-unit id="level.none" resname="level.none">
+        <source>Clean</source>
+      </trans-unit>
+      <trans-unit id="level.unchecked" resname="level.unchecked">
+        <source>Not checked</source>
+      </trans-unit>
+      <trans-unit id="empty.skills" resname="empty.skills">
+        <source>nr_llm has no skills yet. Add and synchronize a skill source, then check the skills here.</source>
+      </trans-unit>
+      <trans-unit id="empty.filter" resname="empty.filter">
+        <source>No skill has this review level.</source>
+      </trans-unit>
+      <trans-unit id="table.caption" resname="table.caption">
+        <source>nr_llm skills with their review level, license and SkillSpector result</source>
+      </trans-unit>
+      <trans-unit id="col.skill" resname="col.skill">
+        <source>Skill</source>
+      </trans-unit>
+      <trans-unit id="col.state" resname="col.state">
+        <source>State</source>
+      </trans-unit>
+      <trans-unit id="col.review" resname="col.review">
+        <source>Review</source>
+      </trans-unit>
+      <trans-unit id="col.license" resname="col.license">
+        <source>License</source>
+      </trans-unit>
+      <trans-unit id="col.skillspector" resname="col.skillspector">
+        <source>SkillSpector</source>
+      </trans-unit>
+      <trans-unit id="col.checked" resname="col.checked">
+        <source>Checked</source>
+      </trans-unit>
+      <trans-unit id="col.actions" resname="col.actions">
+        <source>Actions</source>
+      </trans-unit>
+      <trans-unit id="state.enabled" resname="state.enabled">
+        <source>enabled</source>
+      </trans-unit>
+      <trans-unit id="state.disabled" resname="state.disabled">
+        <source>disabled</source>
+      </trans-unit>
+      <trans-unit id="state.hidden" resname="state.hidden">
+        <source>hidden</source>
+      </trans-unit>
+      <trans-unit id="state.orphaned" resname="state.orphaned">
+        <source>orphaned</source>
+      </trans-unit>
+      <trans-unit id="findings.summary" resname="findings.summary">
+        <source>{count, plural, one {# finding} other {# findings}}</source>
+      </trans-unit>
+      <trans-unit id="license.compatible" resname="license.compatible">
+        <source>compatible</source>
+      </trans-unit>
+      <trans-unit id="license.review" resname="license.review">
+        <source>review</source>
+      </trans-unit>
+      <trans-unit id="license.incompatible" resname="license.incompatible">
+        <source>incompatible</source>
+      </trans-unit>
+      <trans-unit id="license.unknown" resname="license.unknown">
+        <source>undeclared</source>
+      </trans-unit>
+      <trans-unit id="skillspector.ok" resname="skillspector.ok">
+        <source>scanned</source>
+      </trans-unit>
+      <trans-unit id="skillspector.unavailable" resname="skillspector.unavailable">
+        <source>not installed</source>
+      </trans-unit>
+      <trans-unit id="skillspector.error" resname="skillspector.error">
+        <source>failed</source>
+      </trans-unit>
+      <trans-unit id="skillspector.off" resname="skillspector.off">
+        <source>not run</source>
+      </trans-unit>
+      <trans-unit id="checked.never" resname="checked.never">
+        <source>never</source>
+      </trans-unit>
+      <trans-unit id="action.edit" resname="action.edit">
+        <source>Open the skill record</source>
+      </trans-unit>
+      <trans-unit id="action.hide" resname="action.hide">
+        <source>Hide</source>
+      </trans-unit>
+      <trans-unit id="action.unhide" resname="action.unhide">
+        <source>Unhide</source>
+      </trans-unit>
+      <trans-unit id="action.cancel" resname="action.cancel">
+        <source>Cancel</source>
+      </trans-unit>
+      <trans-unit id="action.hide.confirm.title" resname="action.hide.confirm.title">
+        <source>Hide “%s”?</source>
+      </trans-unit>
+      <trans-unit id="action.hide.confirm.message" resname="action.hide.confirm.message">
+        <source>nr_llm and Skillflow will no longer use this skill until it is unhidden. Its enabled state in nr_llm stays as it is.</source>
+      </trans-unit>
+      <trans-unit id="denied.title" resname="denied.title">
+        <source>Administrator access required</source>
+      </trans-unit>
+      <trans-unit id="denied.message" resname="denied.message">
+        <source>The Skills Inspector shows every skill body verbatim and is available to administrators only.</source>
+      </trans-unit>
+      <trans-unit id="flash.scan.title" resname="flash.scan.title">
+        <source>Inspection finished</source>
+      </trans-unit>
+      <trans-unit id="flash.scan.message" resname="flash.scan.message">
+        <source>Checked {checked, plural, one {# skill} other {# skills}}: {danger} danger, {warning} warning, {info} info. Nothing was hidden automatically.</source>
+      </trans-unit>
+      <trans-unit id="flash.toggle.failed" resname="flash.toggle.failed">
+        <source>State change failed</source>
+      </trans-unit>
+      <trans-unit id="flash.hidden.title" resname="flash.hidden.title">
+        <source>Skill hidden</source>
+      </trans-unit>
+      <trans-unit id="flash.hidden.message" resname="flash.hidden.message">
+        <source>nr_llm and Skillflow will not use the skill.</source>
+      </trans-unit>
+      <trans-unit id="flash.unhidden.title" resname="flash.unhidden.title">
+        <source>Skill unhidden</source>
+      </trans-unit>
+      <trans-unit id="flash.unhidden.message" resname="flash.unhidden.message">
+        <source>The skill is visible again; its enabled state in nr_llm still applies.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

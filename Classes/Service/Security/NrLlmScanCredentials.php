@@ -33,7 +33,7 @@ final class NrLlmScanCredentials
      *
      * @var list<string>
      */
-    private const OPENAI_COMPATIBLE = [
+    private const array OPENAI_COMPATIBLE = [
         'openai', 'openrouter', 'mistral', 'groq', 'together',
         'fireworks', 'perplexity', 'ollama', 'azure_openai', 'custom',
     ];
