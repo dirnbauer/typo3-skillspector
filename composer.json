@@ -74,7 +74,7 @@
     "extra": {
         "typo3/cms": {
             "extension-key": "skillspector",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "web-dir": ".Build/public"
         }
     }
