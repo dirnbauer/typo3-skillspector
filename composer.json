@@ -25,7 +25,7 @@
     ],
     "require": {
         "php": "^8.4",
-        "netresearch/nr-llm": "^0.34 || ^0.35",
+        "netresearch/nr-llm": "^0.34 || ^0.35 || ^0.41.3",
         "symfony/process": "^7.4",
         "symfony/yaml": "^7.4",
         "typo3/cms-backend": "^14.3.7",
@@ -74,7 +74,7 @@
     "extra": {
         "typo3/cms": {
             "extension-key": "skillspector",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "web-dir": ".Build/public"
         }
     }
