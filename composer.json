@@ -32,9 +32,9 @@
         "typo3/cms-core": "^14.3.7"
     },
     "require-dev": {
-        "phpstan/phpstan": "^2.2",
-        "phpstan/phpstan-phpunit": "^2.0.18",
-        "phpunit/phpunit": "^13.3",
+        "phpstan/phpstan": "^2.3.1",
+        "phpstan/phpstan-phpunit": "^2.1.1",
+        "phpunit/phpunit": "^13.4.3",
         "saschaegerer/phpstan-typo3": "^3.1",
         "typo3/coding-standards": "^0.9",
         "typo3/testing-framework": "^9.7"
@@ -59,10 +59,11 @@
             "@ci:tests:unit",
             "@ci:tests:functional"
         ],
-        "ci:cgl": "php-cs-fixer fix --config .php-cs-fixer.dist.php --diff --verbose",
+        "ci:cgl": "php-cs-fixer fix --config .php-cs-fixer.dist.php --dry-run --diff --verbose",
         "ci:phpstan": "phpstan analyse --configuration phpstan.neon --no-progress",
         "ci:tests:functional": "phpunit --configuration Build/phpunit/FunctionalTests.xml",
-        "ci:tests:unit": "phpunit --configuration Build/phpunit/UnitTests.xml"
+        "ci:tests:unit": "phpunit --configuration Build/phpunit/UnitTests.xml",
+        "fix:cgl": "php-cs-fixer fix --config .php-cs-fixer.dist.php"
     },
     "config": {
         "allow-plugins": {
@@ -74,7 +75,7 @@
     "extra": {
         "typo3/cms": {
             "extension-key": "skillspector",
-            "version": "1.2.2",
+            "version": "1.2.3",
             "web-dir": ".Build/public"
         }
     }

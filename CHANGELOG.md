@@ -5,6 +5,16 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.2.3 — 2026-10-24
+
+### Changed
+
+- Refresh compatible Composer development tools and dependency audit coverage.
+- Test the current nr_llm 0.41 line alongside the retained 0.34 and 0.35 lines.
+- Add one local test entry point with explicit PHP-version validation and the existing quality checks.
+- Pin current CI action releases and patched MariaDB images; require PHP 8.4 and 8.5 checks.
+- Make the coding-standard CI check read-only; keep the explicit fixer available.
+
 ## [1.2.2] - 2026-10-23
 
 ### Changed
