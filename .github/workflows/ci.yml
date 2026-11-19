@@ -80,6 +80,10 @@ jobs:
       matrix:
         include:
           - php-version: '8.4'
+            nr-llm: '0.51'
+          - php-version: '8.5'
+            nr-llm: '0.51'
+          - php-version: '8.4'
             nr-llm: '0.41'
           - php-version: '8.5'
             nr-llm: '0.41'

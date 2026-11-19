@@ -13,7 +13,7 @@ Requirements
 
 *   TYPO3 14.3 LTS
 *   PHP 8.4 or newer
-*   :composer:`netresearch/nr-llm` ``^0.34 || ^0.35`` — it owns the skills,
+*   :composer:`netresearch/nr-llm` ``^0.34 || ^0.35 || ^0.41.3 || ^0.51.1`` — it owns the skills,
     the :sql:`tx_nrllm_skill` table and the LLM connection this extension can
     borrow credentials from
 *   EXT:scheduler — optional, and only to run the check on a schedule; the

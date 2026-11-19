@@ -24,7 +24,7 @@ Everything is advisory. The report is written to `tx_nrllm_skill`; `enabled`, `o
 |---|---|
 | TYPO3 | 14.3 LTS |
 | PHP | 8.4+ |
-| `netresearch/nr-llm` | `^0.34 \|\| ^0.35` — owns the skills and their storage |
+| `netresearch/nr-llm` | `^0.34 \|\| ^0.35 \|\| ^0.41.3 \|\| ^0.51.1` — owns the skills and their storage |
 | EXT:scheduler | Optional, to run the check on a schedule |
 | NVIDIA SkillSpector | Optional external binary |
 
